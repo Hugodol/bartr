@@ -1,24 +1,27 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const VideoChat = props => (
-  <div className="static-modal">
-    <Modal.Dialog>
-      <Modal.Header>
-        <Modal.Title>Video Chat</Modal.Title>
-      </Modal.Header>
+const VideoChat = props => {
 
-      <Modal.Body>
-        <video id="remoteVideo"></video>
-        <video id="localVideo"></video>
-      </Modal.Body>
+  return(
+    <div className="static-modal">
+      <Modal.Dialog>
+        <Modal.Header>
+          <Modal.Title>Video Chat</Modal.Title>
+        </Modal.Header>
 
-      <Modal.Footer>
-        <Button onClick={() => props.closeVideo()}>Close</Button>
-      </Modal.Footer>
+        <Modal.Body>
+          <video id="remoteVideo" autoPlay></video>
+          <video id="localVideo" autoPlay></video>
+        </Modal.Body>
 
-    </Modal.Dialog>
-  </div>
-);
+        <Modal.Footer>
+          <Button onClick={() => props.closeVideo()}>Close</Button>
+        </Modal.Footer>
+
+      </Modal.Dialog>
+    </div>
+  );
+}
 
 export default VideoChat;

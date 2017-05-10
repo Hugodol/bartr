@@ -3,9 +3,15 @@ import { Button, ButtonControl, Well } from 'react-bootstrap';
 import axios from 'axios';
 import swal from 'sweetalert';
 
+
+
 const EngageReqListEntries = (props) => {
   let currMessages = [];
   let currentEngagement = props.currentEngagement;
+  const constraints = {
+    video: true,
+    audio: false
+  }
 
   _.each(currentEngagement.messages, message => {
     currMessages = [...currMessages, message.message]
@@ -52,6 +58,17 @@ const EngageReqListEntries = (props) => {
     })
   }
 
+  const videoCall = () => {
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then(stream => {
+        console.log('stream in videoCall', stream);
+        let localVideo = document.getElementById('localVideo');
+        localVideo.srcObject = stream;
+      })
+      .catch(err => console.log(err));
+
+  };
+
   return(
     <Well className="engagementlistentry">
       <Well onClick={() => messageAndId() } className="engagementlistentry">
@@ -63,7 +80,8 @@ const EngageReqListEntries = (props) => {
       <Button value={currentEngagement} onClick={() => {engagementCompleted(event, currentEngagement)}} bsStyle="primary">Completed?</Button>
       <Button onClick={
         () => {
-          props.openVideo()
+          props.openVideo();
+          videoCall();
         }
       }>Video</Button>
     </Well>
