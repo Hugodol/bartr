@@ -23,7 +23,9 @@
       "auth0_id": "auth0|590914e09d6860661e3fb7fb",
       "address": "1128 Irolo St, Los Angeles, CA 90006",
       "geo_lat": 34.050274,
-      "geo_long":  -118.300763
+      "geo_long":  -118.300763,
+      "public_key": "1M2vQSDNEYtJLb8isznzuApmVgK9GNt9ku",
+      "private_key": "L4JAkNKiuJuPxtDH4fgeiJrduNiz4VctNA5r3ysKGW3ytPTEbhuo"
     }
   },
   {
@@ -36,7 +38,9 @@
       "auth0_id": "auth0|590929df6a75e447a8cad216",
       "address": "970 S Gramercy Pl",
       "geo_lat": 34.053739,
-      "geo_long":  -118.312972
+      "geo_long":  -118.312972,
+      "public_key": "1HvDKNVQnVBj87GXvGVQCmQxa3yiC4CfFT",
+      "private_key": "KwHmotafXdddWdgMyceS9waA3DHwWduxbknSjp2nhnkPwNhMSE1V"
     }
   },
   {
@@ -49,7 +53,9 @@
       "auth0_id": "auth0|59092cb09d6860661e3fbaa6",
       "address": "2634 W 17th St, Los Angeles, CA 90019",
       "geo_lat": 34.041782,
-      "geo_long":  -118.318982
+      "geo_long":  -118.318982,
+      "public_key": "1Bt1MZpyL3yRhQxh7LAjTy6726UpWJR7t7",
+      "private_key": "Kzx2skZcYMzGARCTfqv5f8S5DunWysFVDxkLouo7wQocWW7Y7JN6"
     }
   },
   {
@@ -62,7 +68,9 @@
       "auth0_id": "auth0|59092cb89d6860661e3fbaa7",
       "address": "345 S Oxford Ave, Los Angeles, CA 90020",
       "geo_lat": 34.067745,
-      "geo_long":  -118.308225
+      "geo_long":  -118.308225,
+      "public_key": "15aRanvxh7YY6a8V8ECm5nPyHXEW6Vma9F",
+      "private_key": "L2RW8VnT1eRYJiwhpDL2ipfAzB8ABdHPMyxJbzh8Q7HFLUqrED6N"
     }
   },
   {
@@ -75,7 +83,9 @@
       "auth0_id": "auth0|5909471d3614eb59f2bbcb7a",
       "address": "1142 S Diamond Bar Blvd, Diamond Bar, CA 91765",
       "geo_lat": 34.001745,
-      "geo_long":  -117.809078
+      "geo_long":  -117.809078,
+      "public_key": "13pNbJMXdUcQtMKpagPEN7iwgpjTiA5qYW",
+      "private_key": "KyFqSJmmCqhogE8818CeGuJX1ojRz6K5FhfMkcucHnJ2t9JS7kzW"
     }
   }
 ]

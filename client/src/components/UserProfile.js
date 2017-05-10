@@ -6,6 +6,7 @@ import { PageHeader } from 'react-bootstrap';
 import axios from 'axios';
 import './styles/userProfileStyles.css';
 
+
 class UserProfile extends React.Component {
   constructor (props) {
     super (props);
@@ -16,18 +17,19 @@ class UserProfile extends React.Component {
       service: '',
       lat: '',
       lng: '',
-      listOfServices: [] 
+      listOfServices: [],
+      balance: 0
     }
     
     this.fetchUser = this.fetchUser.bind(this);
     this.fetchScore = this.fetchScore.bind(this);
     this.loadMap = this.loadMap.bind(this);
+    this.handleWithdraw = this.handleWithdraw.bind(this);
   }
 
   componentDidMount() {
     this.getServices();
     this.fetchUser();
-
   }
 
   fetchScore() {
@@ -63,13 +65,22 @@ class UserProfile extends React.Component {
             userService = service.text;
           }
         })
-        this.setState({...this.state,
-          name: res.data.name,
-          address: res.data.address,
-          service: userService,
-          lat: res.data.geo_lat,
-          lng: res.data.geo_long
+        axios.get("https://blockchain.info/q/addressbalance/" + res.data.public_key +  "?confirmations=0&cors=true").then(balance => {
+          console.log("BALANCE IS ", balance);
+          this.setState({...this.state,
+            name: res.data.name,
+            address: res.data.address,
+            service: userService,
+            lat: res.data.geo_lat,
+            lng: res.data.geo_long,
+            wallet: res.data.public_key,
+            balance: balance.data
+          })
         })
+        
+        
+        
+        
         this.loadMap();
       })
       .catch(err => {
@@ -110,6 +121,9 @@ class UserProfile extends React.Component {
       })
       marker.setMap(this.map);
   }
+  handleWithdraw() {
+    console.log("In handleWithdraw");
+  }
 
   render() {
     console.log(this.state)
@@ -124,9 +138,11 @@ class UserProfile extends React.Component {
             <div className="user-profile-info">
               <h1 className="name">{this.state.name}</h1>
               <p className="service">{this.state.service ? this.state.service : null}</p>
+              <p className="wallet">Wallet address: {this.state.wallet}</p>
+              <p className="balance">Balance {this.state.balance / Math.pow(10, 8)} BTC</p>
             </div> 
             <div className="address">{this.state.address ? this.state.address : null}</div>
-            <Link to='/editprofile'><button>Edit Profile</button></Link>
+            <Link to='/editprofile'><button>Edit Profile</button></Link><button onClick={this.handleWithdraw}>Withdraw funds</button>
           </div>
           <div className="google-maps" ref="map"/>
         </div>

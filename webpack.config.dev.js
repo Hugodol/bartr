@@ -40,9 +40,23 @@ module.exports = {
     {
       test: /\.css$/,
       use: ['style-loader', 'css-loader']
+    },
+    {
+        test: /\.json$/,
+        loader: 'json-loader'
     }
-    ]
+    ],
   },
+  resolve: {
+ /*extensions: ['.webpack.js', '.web.js', '.js']*/
+  },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
+  // target: 'node',
   // devServer: {
   //   contentBase: "./client/static",
   //   publicPath: "/",
