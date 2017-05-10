@@ -2,8 +2,11 @@ import React from 'react';
 import axios from "axios";
 import { Link } from 'react-router';
 import _ from "lodash"
+import { Peer } from 'peerjs';
+// import { io } from 'socket.io';
 import EngageReqList from "./EngageReqList";
 import Chat from "./Chat";
+import VideoChat from './VideoChat.js';
 
 class EngageReq extends React.Component {
   constructor(props) {
@@ -12,13 +15,16 @@ class EngageReq extends React.Component {
     this.state = {
       currentEngagement: [],
       messages: [],
-      id : null
+      id : null,
+      videoModal: false
     }
       this.fetchMessages = this.fetchMessages.bind(this);
       this.fetchCurrentEngagement = this.fetchCurrentEngagement.bind(this);
       this.fetchEngagements = this.fetchEngagements.bind(this);
       this.fetchCurrentId = this.fetchCurrentId.bind(this);
       this.fetchChatMessages = this.fetchChatMessages.bind(this);
+      this.closeVideo = this.closeVideo.bind(this);
+      this.openVideo = this.openVideo.bind(this);
   }
 
   componentDidMount () {
@@ -63,18 +69,47 @@ class EngageReq extends React.Component {
     this.setState({messages:[chatMsg, ...this.state.messages]})
   }
 
+  closeVideo() {
+    this.setState({ videoModal: false });
+  }
+
+  openVideo() {
+    this.setState({ videoModal: true });
+  }
+
+  sendPeerId() {
+    // const socket = io.connect();
+    const peer = new Peer({key: process.env.PEERJS_API_KEY});
+
+    let peerId;
+    peer.on('open', id => peerId = id);
+    // socket.to('P2Pvideo').emit('sendId', peerId);
+  }
+
   render() {
     return(
       <div >
-        <h2  className="title" style={{fontFamily: 'Ubuntu', fontWeight: "normal"}} >Current Engagements </h2>
-        <EngageReqList 
-        
+        <h2
+          className="title"
+          style={{fontFamily: 'Ubuntu', fontWeight: "normal"}}
+        >Current Engagements </h2>
+        <EngageReqList
+          openVideo={this.openVideo}
           msgs={this.state.messages}
-          currentEngagement={this.state.currentEngagement} 
+          currentEngagement={this.state.currentEngagement}
           fetchEngagements={this.fetchEngagements}
-          fetchId={this.fetchCurrentId} 
-          fetchMessages={this.fetchMessages}  />
-        <Chat id={this.state.id} fetchChatMessages={this.fetchChatMessages} messages={this.state.messages} currentEngagement={this.state.currentEngagement} />
+          fetchId={this.fetchCurrentId}
+          fetchMessages={this.fetchMessages}
+        />
+        <Chat
+          id={this.state.id}
+          fetchChatMessages={this.fetchChatMessages}
+          messages={this.state.messages}
+          currentEngagement={this.state.currentEngagement}
+        />
+        {this.state.videoModal ?
+          <VideoChat closeVideo={this.closeVideo}/>
+        : null}
       </div>
     )
   }
