@@ -2,19 +2,19 @@ const Sequelize = require('sequelize');
 const path = require('path');
 var sql
 
-if (process.env.NODE_ENV === 'development') {
-	console.log('dev setup')
-  sql = new Sequelize('bartrDB', null, null, {
-    dialect: 'sqlite',
-    storage: path.join(__dirname, 'bartr.sqlite3'),
-    define: {
-      underscored: true
-    }
-  });
-} else {
-	var cls = require('continuation-local-storage');
-	var namespace = cls.createNamespace('my-namespace');
-	Sequelize.cls = namespace;
+// if (process.env.NODE_ENV === 'development') {
+// console.log('dev setup')
+//   sql = new Sequelize('bartrDB', null, null, {
+//     dialect: 'sqlite',
+//     storage: path.join(__dirname, 'bartr.sqlite3'),
+//     define: {
+//       underscored: true
+//     }
+//   });
+// } else {
+var cls = require('continuation-local-storage');
+var namespace = cls.createNamespace('my-namespace');
+Sequelize.cls = namespace;
   sql= new Sequelize(process.env.DATABASE_URL, {
     "dialect":"postgres",
     "ssl":true,
@@ -26,75 +26,86 @@ if (process.env.NODE_ENV === 'development') {
         "require":true
       }
     }
-	});
-}
+});
+// }
 
 const Engagement = sql.define('engagement', {
-		complete: {
-			type: Sequelize.BOOLEAN,
-			allowNull: false,
+complete: {
+type: Sequelize.BOOLEAN,
+allowNull: false,
       defaultValue: false
-		}
+}
 });
 
 const Message = sql.define('message', {
-		message: {
-			type: Sequelize.TEXT,
-			allowNull: false
-		}
+message: {
+type: Sequelize.TEXT,
+allowNull: false
+}
 });
- 
+
 const Review = sql.define('review', {
-		score: {
-			type: Sequelize.INTEGER,
-			allowNull: false
-		},
-		review: {
-			type: Sequelize.TEXT,
-			allowNull: false
-		}
+score: {
+type: Sequelize.INTEGER,
+allowNull: false
+},
+review: {
+type: Sequelize.TEXT,
+allowNull: false
+}
 });
 
 const User = sql.define('user', {
-		email: {
-			type: Sequelize.STRING,
-			allowNull: true,
-			unique: false,
+email: {
+type: Sequelize.STRING,
+allowNull: true,
+unique: false,
       validate: { isEmail: true }
-		},
-		name: {
-			type: Sequelize.STRING,
-			allowNull: true
-		},
-		address: {
-			type: Sequelize.STRING,
-			allowNull: true
-		},
-		geo_lat: {
-			type: Sequelize.FLOAT(10,6),
-			allowNull: true
-		},
-		geo_long: {
-			type: Sequelize.FLOAT(10,6),
-			allowNull: true
-		},
-		auth0_id: {
-			type: Sequelize.STRING,
-			allowNull: false,
+},
+name: {
+type: Sequelize.STRING,
+allowNull: true
+},
+address: {
+type: Sequelize.STRING,
+allowNull: true
+},
+geo_lat: {
+type: Sequelize.FLOAT(10,6),
+allowNull: true
+},
+geo_long: {
+type: Sequelize.FLOAT(10,6),
+allowNull: true
+},
+auth0_id: {
+type: Sequelize.STRING,
+allowNull: false,
+      unique: true
+},
+public_key: {
+type: Sequelize.STRING,
+// allowNull: false,
+      unique: true
+},
+private_key: {
+type: Sequelize.STRING,
+// allowNull: false,
       unique: true
 		},
 		public_key: {
-			type: Sequelize.FLOAT(10,6),
+			type: Sequelize.STRING,
 			// allowNull: true
 		},
 		private_key: {
 			type: Sequelize.STRING,
 			// allowNull: false,
       unique: true
+}
 }, {
-	indexes: [
-		{fields: ['geo_long', 'geo_lat']}
-	]
+indexes: [
+{fields: ['geo_long', 'geo_lat']}
+]
 });
 
 const Service = sql.define('service', {
@@ -103,6 +114,51 @@ const Service = sql.define('service', {
     allowNull: false
   }
 });
+
+const Parcel = sql.define('parcel', {
+  length: {
+    type: Sequelize.DECIMAL(10, 4)
+  },
+  width: {
+    type: Sequelize.DECIMAL(10, 4)
+  },
+  height: {
+    type: Sequelize.DECIMAL(10, 4)
+  },
+  distance_unit: {
+    type: Sequelize.TEXT
+  },
+  weight: {
+    type: Sequelize.DECIMAL(10, 4)
+  },
+  mass_unit: {
+    type: Sequelize.TEXT
+  }
+});
+
+
+const Shipment = sql.define('shipment', {
+  status: {
+    type: Sequelize.TEXT,
+  },
+  address_to: {
+    type: Sequelize.TEXT
+  },
+  address_from: {
+    type: Sequelize.TEXT
+  },
+  packages: {
+    type: Sequelize.ARRAY(Sequelize.JSONB),
+  },
+  shipment_data: {
+    type: Sequelize.DATE
+  },
+  metadata: {
+    type: Sequelize.STRING(100),
+  }
+});
+
+
 
 User.belongsTo(Service);
 Service.hasMany(User);
@@ -126,9 +182,21 @@ Review.belongsTo(User,  { as: 'receiver', foreignKey: { name: 'receiver_id', all
 User.hasMany(Review, { as: 'sent_reviews', foreignKey: 'sender_id'});
 User.hasMany(Review, { as: 'received_reviews',foreignKey: 'receiver_id'});
 
+Shipment.belongsTo(User, { as: 'sender', foreignKey: { name: 'sender_id', allowNull: false }, onDelete: 'CASCADE' });
+Shipment.belongsTo(User, { as: 'receiver', foreignKey: { name: 'receiver_id', allowNull: false }, onDelete: 'CASCADE' });
+User.hasMany(Shipment, { as: 'sent_shipments', foreignKey: 'sender_id'});
+User.hasMany(Shipment, { as: 'received_shipments', foreignKey: 'receiver_id'});
+
+
+Parcel.belongsTo(Shipment);
+Shipment.hasMany(Parcel);
+
+
 module.exports.User = User;
 module.exports.Service = Service;
 module.exports.Review = Review;
 module.exports.Message = Message;
 module.exports.Engagement = Engagement;
+module.exports.Parcel = Parcel;
+module.exports.Shipment = Shipment;
 module.exports.sql = sql;
