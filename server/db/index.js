@@ -115,48 +115,48 @@ const Service = sql.define('service', {
   }
 });
 
-const Parcel = sql.define('parcel', {
-  length: {
-    type: Sequelize.DECIMAL(10, 4)
-  },
-  width: {
-    type: Sequelize.DECIMAL(10, 4)
-  },
-  height: {
-    type: Sequelize.DECIMAL(10, 4)
-  },
-  distance_unit: {
-    type: Sequelize.TEXT
-  },
-  weight: {
-    type: Sequelize.DECIMAL(10, 4)
-  },
-  mass_unit: {
-    type: Sequelize.TEXT
-  }
-});
+// const Parcel = sql.define('parcel', {
+//   length: {
+//     type: Sequelize.TEXT
+//   },
+//   width: {
+//     type: Sequelize.TEXT
+//   },
+//   height: {
+//     type: Sequelize.TEXT
+//   },
+//   distance_unit: {
+//     type: Sequelize.TEXT
+//   },
+//   weight: {
+//     type: Sequelize.TEXT
+//   },
+//   mass_unit: {
+//     type: Sequelize.TEXT
+//   }
+// });
 
 
-const Shipment = sql.define('shipment', {
-  status: {
-    type: Sequelize.TEXT,
-  },
-  address_to: {
-    type: Sequelize.TEXT
-  },
-  address_from: {
-    type: Sequelize.TEXT
-  },
-  packages: {
-    type: Sequelize.ARRAY(Sequelize.JSONB),
-  },
-  shipment_data: {
-    type: Sequelize.DATE
-  },
-  metadata: {
-    type: Sequelize.STRING(100),
-  }
-});
+// const Shipment = sql.define('shipment', {
+//   status: {
+//     type: Sequelize.TEXT,
+//   },
+//   address_to: {
+//     type: Sequelize.TEXT
+//   },
+//   address_from: {
+//     type: Sequelize.TEXT
+//   },
+//   packages: {
+//     type: Sequelize.ARRAY(Sequelize.JSONB),
+//   },
+//   shipment_data: {
+//     type: Sequelize.DATE
+//   },
+//   metadata: {
+//     type: Sequelize.STRING(100),
+//   }
+// });
 
 
 
@@ -182,14 +182,14 @@ Review.belongsTo(User,  { as: 'receiver', foreignKey: { name: 'receiver_id', all
 User.hasMany(Review, { as: 'sent_reviews', foreignKey: 'sender_id'});
 User.hasMany(Review, { as: 'received_reviews',foreignKey: 'receiver_id'});
 
-Shipment.belongsTo(User, { as: 'sender', foreignKey: { name: 'sender_id', allowNull: false }, onDelete: 'CASCADE' });
-Shipment.belongsTo(User, { as: 'receiver', foreignKey: { name: 'receiver_id', allowNull: false }, onDelete: 'CASCADE' });
-User.hasMany(Shipment, { as: 'sent_shipments', foreignKey: 'sender_id'});
-User.hasMany(Shipment, { as: 'received_shipments', foreignKey: 'receiver_id'});
+// Shipment.belongsTo(User, { as: 'sender', foreignKey: { name: 'sender_id', allowNull: false }, onDelete: 'CASCADE' });
+// Shipment.belongsTo(User, { as: 'receiver', foreignKey: { name: 'receiver_id', allowNull: false }, onDelete: 'CASCADE' });
+// User.hasMany(Shipment, { as: 'sent_shipments', foreignKey: 'sender_id'});
+// User.hasMany(Shipment, { as: 'received_shipments', foreignKey: 'receiver_id'});
 
 
-Parcel.belongsTo(Shipment);
-Shipment.hasMany(Parcel);
+// Parcel.belongsTo(Shipment);
+// Shipment.hasMany(Parcel);
 
 
 module.exports.User = User;
@@ -197,6 +197,6 @@ module.exports.Service = Service;
 module.exports.Review = Review;
 module.exports.Message = Message;
 module.exports.Engagement = Engagement;
-module.exports.Parcel = Parcel;
-module.exports.Shipment = Shipment;
+// module.exports.Parcel = Parcel;
+// module.exports.Shipment = Shipment;
 module.exports.sql = sql;
