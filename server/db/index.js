@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const path = require('path');
-var sql
 
 // if (process.env.NODE_ENV === 'development') {
 console.log('dev setup')
