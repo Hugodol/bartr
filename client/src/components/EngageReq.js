@@ -29,7 +29,7 @@ class EngageReq extends React.Component {
 
   componentDidMount () {
     this.fetchCurrentEngagement();
-    this.sendPeerId();
+    // this.sendPeerId();
   }
 
   fetchCurrentEngagement() {
