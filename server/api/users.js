@@ -29,13 +29,11 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    console.log("INSIDE ROUTER POST REQUEST!!!!!!!!!!!!!!!!!!!!!!!");
-    console.log("REQ USER IS", req.user);
     req.user['auth0_id'] = req.user['sub'];
     let wallet = easyBtc.newWallet()
+    // console.log("WALLET IS ", wallet);
     req.user.public_key = wallet.address;
     req.user.private_key = wallet.wif;
-    console.log("REQ USER NOW IS", req.user);
     User.upsert(req.user)
     .then(data => {
       console.log('User POST Request Successful')
@@ -48,6 +46,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.put('/', (req, res, next) => {
+  console.log("INSIDE ROUTER PUT REQUEST BODY IS ", req)
     findAuth0User(req)
     .then(data => {
         data.updateAttributes({
