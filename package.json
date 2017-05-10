@@ -44,6 +44,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "body-parser": "^1.17.1",
     "bootstrap": "^3.3.7",
+    "continuation-local-storage": "^3.2.0",
     "css-loader": "^0.28.0",
     "dotenv": "^4.0.0",
     "easy-bitcoin-js": "^0.2.2",
