@@ -82,7 +82,15 @@ const User = sql.define('user', {
 			type: Sequelize.STRING,
 			allowNull: false,
       unique: true
-		}
+		},
+		public_key: {
+			type: Sequelize.FLOAT(10,6),
+			// allowNull: true
+		},
+		private_key: {
+			type: Sequelize.STRING,
+			// allowNull: false,
+      unique: true
 }, {
 	indexes: [
 		{fields: ['geo_long', 'geo_lat']}
