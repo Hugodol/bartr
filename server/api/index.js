@@ -5,5 +5,6 @@ router.use('/engagements', require('./engagements'));
 router.use('/messages', require('./messages'));
 router.use('/services', require('./services'));
 router.use('/reviews', require('./reviews'));
+router.use('/shipments', require('./shipments'));
 
 module.exports = router;

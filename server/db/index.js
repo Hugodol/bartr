@@ -116,8 +116,6 @@ const Service = sql.define('service', {
 });
 
 
-
-
 User.belongsTo(Service);
 Service.hasMany(User);
 
@@ -139,7 +137,6 @@ Review.belongsTo(User,  { as: 'sender', foreignKey: { name: 'sender_id', allowNu
 Review.belongsTo(User,  { as: 'receiver', foreignKey: { name: 'receiver_id', allowNull: false }, onDelete: 'CASCADE' });
 User.hasMany(Review, { as: 'sent_reviews', foreignKey: 'sender_id'});
 User.hasMany(Review, { as: 'received_reviews',foreignKey: 'receiver_id'});
-
 
 
 module.exports.User = User;
