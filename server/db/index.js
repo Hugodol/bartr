@@ -3,30 +3,30 @@ const path = require('path');
 var sql
 
 // if (process.env.NODE_ENV === 'development') {
-// console.log('dev setup')
-//   sql = new Sequelize('bartrDB', null, null, {
-//     dialect: 'sqlite',
-//     storage: path.join(__dirname, 'bartr.sqlite3'),
-//     define: {
-//       underscored: true
-//     }
-//   });
-// } else {
-var cls = require('continuation-local-storage');
-var namespace = cls.createNamespace('my-namespace');
-Sequelize.cls = namespace;
-  sql= new Sequelize(process.env.DATABASE_URL, {
-    "dialect":"postgres",
-    "ssl":true,
-    "define": {
-      "underscored": true
-    },
-    "dialectOptions":{
-      "ssl":{
-        "require":true
-      }
+console.log('dev setup')
+  sql = new Sequelize('bartrDB', null, null, {
+    dialect: 'sqlite',
+    storage: path.join(__dirname, 'bartr.sqlite3'),
+    define: {
+      underscored: true
     }
-});
+  });
+// } else {
+// var cls = require('continuation-local-storage');
+// var namespace = cls.createNamespace('my-namespace');
+// Sequelize.cls = namespace;
+//   sql= new Sequelize(process.env.HEROKU_POSTGRESQL_TEAL_URL, {
+//     "dialect":"postgres",
+//     "ssl":true,
+//     "define": {
+//       "underscored": true
+//     },
+//     "dialectOptions":{
+//       "ssl":{
+//         "require":true
+//       }
+//     }
+// });
 // }
 
 const Engagement = sql.define('engagement', {
@@ -115,50 +115,6 @@ const Service = sql.define('service', {
   }
 });
 
-// const Parcel = sql.define('parcel', {
-//   length: {
-//     type: Sequelize.TEXT
-//   },
-//   width: {
-//     type: Sequelize.TEXT
-//   },
-//   height: {
-//     type: Sequelize.TEXT
-//   },
-//   distance_unit: {
-//     type: Sequelize.TEXT
-//   },
-//   weight: {
-//     type: Sequelize.TEXT
-//   },
-//   mass_unit: {
-//     type: Sequelize.TEXT
-//   }
-// });
-
-
-// const Shipment = sql.define('shipment', {
-//   status: {
-//     type: Sequelize.TEXT,
-//   },
-//   address_to: {
-//     type: Sequelize.TEXT
-//   },
-//   address_from: {
-//     type: Sequelize.TEXT
-//   },
-//   packages: {
-//     type: Sequelize.ARRAY(Sequelize.JSONB),
-//   },
-//   shipment_data: {
-//     type: Sequelize.DATE
-//   },
-//   metadata: {
-//     type: Sequelize.STRING(100),
-//   }
-// });
-
-
 
 User.belongsTo(Service);
 Service.hasMany(User);
@@ -182,21 +138,10 @@ Review.belongsTo(User,  { as: 'receiver', foreignKey: { name: 'receiver_id', all
 User.hasMany(Review, { as: 'sent_reviews', foreignKey: 'sender_id'});
 User.hasMany(Review, { as: 'received_reviews',foreignKey: 'receiver_id'});
 
-// Shipment.belongsTo(User, { as: 'sender', foreignKey: { name: 'sender_id', allowNull: false }, onDelete: 'CASCADE' });
-// Shipment.belongsTo(User, { as: 'receiver', foreignKey: { name: 'receiver_id', allowNull: false }, onDelete: 'CASCADE' });
-// User.hasMany(Shipment, { as: 'sent_shipments', foreignKey: 'sender_id'});
-// User.hasMany(Shipment, { as: 'received_shipments', foreignKey: 'receiver_id'});
-
-
-// Parcel.belongsTo(Shipment);
-// Shipment.hasMany(Parcel);
-
 
 module.exports.User = User;
 module.exports.Service = Service;
 module.exports.Review = Review;
 module.exports.Message = Message;
 module.exports.Engagement = Engagement;
-// module.exports.Parcel = Parcel;
-// module.exports.Shipment = Shipment;
 module.exports.sql = sql;
