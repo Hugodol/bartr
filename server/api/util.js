@@ -130,4 +130,4 @@ var findHighestRatedServiceProviders = function(req, res){
 
 module.exports.findAuth0User = findAuth0User;
 module.exports.getBoundingBox = getBoundingBox;
-// module.exports.findHighestRatedServiceProviders = findHighestRatedServiceProviders;
+module.exports.findHighestRatedServiceProviders = findHighestRatedServiceProviders;
