@@ -89,52 +89,5 @@ var findAuth0User = function(req){
   })
 };
 
-
-//figure out which controller to implement this in...
-//and how to pass down the data to react component inside the console.log by tomorrow evening...
-var findHighestRatedServiceProviders = function(req, res){
-  let reviewsAverage = [[], []];
-  let resultData = [];
-  let personName = '';
-
-  Service.findAll({ where: { type: req.body.specialty}, limit: 1})
-    .then((service) => {
-      console.log("In The Find All Services Functon: ", service);
-      User.findAll({ where: { service_id: service.id}})
-        .then((users) => {
-          console.log("In the Find All Users Who Provide a Type of Service Function: ", users);
-          users.forEach((person) => {
-            personName = person.name;
-            console.log("Each Persons Name: ", person.name);
-            Review.findAll({ where: { sender_id: person.id}})
-              .then((reviews) => {
-                console.log("In the Find All Reviews of Users of a Particular Service Function: ", reviews);
-                let avg = reviews.reduce((acc, index) => index + acc, 0)/reviews.length;
-                reviewsAverage[0].push(avg);
-                console.log("" + personName + "'s avg rating is: ", avg);
-                reviewsAverage[1].push({personName: avg});
-                let bestRated = reviewAverage[0].sort().reverse();
-                bestRated = [bestRated[0], bestRated[1]];
-                console.log("Highest Rated Avg Scores Are: ", bestRated);
-                reviewsAverage[1].map((data) => {
-                  for(let key in data){
-                    if(data[key] === bestRated[0] || bestRated[1]){
-                      resultData.push(data);
-                    }
-                  }
-                });
-                console.log("Result Data So Far: ", resultData);
-              });
-          });
-        });
-    });
-    if(resultData.length > 0){
-      res.status(200).send(resultData);
-    } else {
-      res.status(404).send("Coudn't get Highest Rated Service Providers Due To Async Issues... Probably...");
-    }
-};
-
 module.exports.findAuth0User = findAuth0User;
 module.exports.getBoundingBox = getBoundingBox;
-module.exports.findHighestRatedServiceProviders = findHighestRatedServiceProviders;
