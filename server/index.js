@@ -16,7 +16,7 @@ const app = express();
 // }
 
 app.use(morgan());
-// app.use(expressSession({secret: 'bigboost'}));
+app.use(expressSession({secret: 'bigboost'}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client/static')));
 
