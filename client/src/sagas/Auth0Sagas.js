@@ -27,7 +27,7 @@ export function* loginRequestSaga() {
       }
     }
   }
-  const lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, auth0LockConfig);
+  const lock = new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, auth0LockConfig);
 
   const showLock = () =>
     new Promise((resolve, reject) => {
