@@ -15,7 +15,7 @@ var sql
 var cls = require('continuation-local-storage');
 var namespace = cls.createNamespace('my-namespace');
 Sequelize.cls = namespace;
-  sql= new Sequelize(process.env.DATABASE_URL, {
+  sql= new Sequelize(process.env.HEROKU_POSTGRESQL_TEAL_URL, {
     "dialect":"postgres",
     "ssl":true,
     "define": {
