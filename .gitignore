@@ -1,6 +1,6 @@
 #common
 node_modules
-bundle.js
+#bundle.js
 yarn.lock
 
 # Ignore Mac DS_Store files
@@ -8,7 +8,7 @@ yarn.lock
 
 #project specific
 *.sqlite3
-bundle.js
+#bundle.js
 #user specific
 #shak
 .idea
@@ -17,5 +17,5 @@ bundle.js
 #justin
 .DS_Store
 npm-debug.log
-bundle.js
+#bundle.js
 API_KEY.js
