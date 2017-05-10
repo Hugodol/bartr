@@ -19,7 +19,8 @@ class ServiceMap extends Component {
     this.state = {
       selectedServiceType: null,
       foundServiceUsers: [],
-      serviceTypes: []
+      serviceTypes: [],
+      highestRated: []
     }
 
     this.loadMap = this.loadMap.bind(this);
@@ -33,19 +34,41 @@ class ServiceMap extends Component {
 
     this.googleMap = null;
     this.googleMapMarkers = [];
+    this.loadHighestRatedServiceProviders = this.loadHighestRatedServiceProviders.bind(this);
 
   }
 
   componentDidMount() {
     this.loadServicesTypes();
     this.loadMap();
-    this.loadServices()
+    this.loadServices();
+    this.loadHighestRatedServiceProviders();
   }
 
   componentDidUpdate() {
     // this.loadServicesTypes();
     this.loadMap();
     // this.loadServices()
+    this.loadHighestRatedServiceProviders();
+  }
+
+
+  loadHighestRatedServiceProviders(){
+    const config = {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.id_token
+      }
+    }
+    axios.get(API_ENDPOINT + '/api/services/' + this.state.selectedServiceType, config)
+      .then((result) => {
+        console.log("Successfully got the highest rated service providers: ", result);
+        this.setState({
+          highestRated: result.data
+        });
+      })
+      .catch((error) => {
+        console.log("Failed to get the highest rated service providers: ", error);
+      })
   }
 
 
@@ -116,10 +139,10 @@ class ServiceMap extends Component {
         `<h1 id="firstHeading" class="firstHeading">${user.name}</h1>` +
         `<image wrapped size="medium" src="http://images4.wikia.nocookie.net/marveldatabase/images/9/9b/Ultimate_spiderman.jpg" height="85" width="85"/>` +
         `<div id="bodyContent">` + `<h2>${user.service.type}</h2>` + `</div>`;
-        
+
 //////////////////// If we want to add something so they can send a message with their request///////////////////////
 
-        // `<form id="map-form">` + `<input id="request-engage" type="text" placeholder="Send a Request!"/>` + 
+        // `<form id="map-form">` + `<input id="request-engage" type="text" placeholder="Send a Request!"/>` +
         // `<input type='submit' id="submit-request" />` + `</form>`
 
         let infoWindow = new maps.InfoWindow({
@@ -141,7 +164,7 @@ class ServiceMap extends Component {
     const homeUrl = "https://cdn3.iconfinder.com/data/icons/map-markers-1/512/residence-512.png";
       const google = window.google;
       const maps = google.maps;
-      
+
       const mapRef = this.refs.map;
       const node = ReactDOM.findDOMNode(mapRef);
 
