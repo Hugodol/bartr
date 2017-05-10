@@ -6,6 +6,8 @@ const db = require('../db');
 const Engagement = db.Engagement;
 const User = db.User;
 const Message = db.Message;
+const Service = db.Service;
+const Review = db.Review;
 
 
 
@@ -87,5 +89,43 @@ var findAuth0User = function(req){
   })
 };
 
+
+//figure out which controller to implement this in...
+//and how to pass down the data to react component inside the console.log by tomorrow evening...
+var findHighestRatedServiceProviders = function(req, res){
+  let reviewsAverage = [[], []];
+  let resultData = [];
+
+  Service.findAll({ where: { type: req.body.specialty}, limit: 1})
+    .then((service) => {
+      User.findAll({ where: { service_id: service.id}})
+        .then((users) => {
+          users.forEach((person) => {
+            Review.findAll({ where: { sender_id: person.id}})
+              .then((reviews) => {
+                let avg = reviews.reduce((acc, index) => index + acc, 0)/reviews.length;
+                reviewsAverage[0].push(avg);
+                reviewsAverage[1].push({person.name: avg});
+                let bestRated = reviewAverage[0].sort().reverse();
+                bestRated = [bestRated[0], bestRated[1]];
+                reviewsAverage[1].map((data) => {
+                  for(let key in data){
+                    if(data[key] === bestRated[0] || bestRated[1]){
+                      resultData.push(data);
+                    }
+                  }
+                });
+              });
+          });
+        });
+    });
+    if(resultData.length > 0){
+      res.status(200).send(resultData)
+    } else {
+      res.status(404).send("Coudn't get Highest Rated Service Providers Due To Async Issues... Probably...");
+    }
+};
+
 module.exports.findAuth0User = findAuth0User;
 module.exports.getBoundingBox = getBoundingBox;
+module.exports.findHighestRatedServiceProviders = findHighestRatedServiceProviders;
