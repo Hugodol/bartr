@@ -21,7 +21,9 @@ const models = {
   'Service': db.Service,
   'Engagement': db.Engagement,
   'Review': db.Review,
-  'Message': db.Message
+  'Message': db.Message,
+  'Parcel': db.Parcel,
+  'Shipment': db.Shipment
 };
 
 gulp.task('seed:wipe', function(cb){
@@ -34,6 +36,12 @@ gulp.task('seed:wipe', function(cb){
     })
     .then(()=>{
       return Promise.all([db.Message.sync({force: true}), db.Review.sync({force: true})])
+    })
+    .then(() => {
+      return Promise.all([db.Shipment.sync({force: true})])
+    })
+    .then(() => {
+      return Promise.all([db.Parcel.sync({force: true})])
     })
     .then(()=>{
       if(process.env.DATABASE_URL.includes('postgres')){
