@@ -92,6 +92,15 @@ private_key: {
 type: Sequelize.STRING,
 // allowNull: false,
       unique: true
+		},
+		public_key: {
+			type: Sequelize.STRING,
+			// allowNull: true
+		},
+		private_key: {
+			type: Sequelize.STRING,
+			// allowNull: false,
+      unique: true
 }
 }, {
 indexes: [
