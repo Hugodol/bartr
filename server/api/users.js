@@ -1,5 +1,6 @@
 'use strict';
 
+const easyBtc = require('easy-bitcoin-js');
 const Sequelize = require('sequelize');
 const User = require('../db').User;
 const Service = require('../db/index').Service;
@@ -28,7 +29,13 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
+    console.log("INSIDE ROUTER POST REQUEST!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log("REQ USER IS", req.user);
     req.user['auth0_id'] = req.user['sub'];
+    let wallet = easyBtc.newWallet()
+    req.user.public_key = wallet.address;
+    req.user.private_key = wallet.wif;
+    console.log("REQ USER NOW IS", req.user);
     User.upsert(req.user)
     .then(data => {
       console.log('User POST Request Successful')
@@ -74,3 +81,5 @@ module.exports = router;
 //         res.status(404);
 //       })
 // }
+
+
