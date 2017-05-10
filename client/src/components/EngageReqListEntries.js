@@ -14,7 +14,8 @@ class EngageReqListEntries extends Component {
       constraints: {
         video: true,
         audio: false
-      }
+      },
+      remotePeerId: null
     }
     this.setCurrMessages();
   }

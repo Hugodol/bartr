@@ -16,7 +16,7 @@ io.on('connection', socket => {
     socket.join(data.name);
   })
   socket.on('sendId', data => {
-    io.sockets.in(data.name).emit('fetchPeerId', data);
+    io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
   });
 });
 
