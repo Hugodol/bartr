@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Button, ButtonControl, Well } from 'react-bootstrap';
 import axios from 'axios';
 import swal from 'sweetalert';
-
-
+import Peer from 'peerjs';
+import io from 'socket.io-client';
 
 const EngageReqListEntries = (props) => {
   let currMessages = [];
@@ -66,7 +66,6 @@ const EngageReqListEntries = (props) => {
         localVideo.srcObject = stream;
       })
       .catch(err => console.log(err));
-
   };
 
   return(
@@ -80,6 +79,7 @@ const EngageReqListEntries = (props) => {
       <Button value={currentEngagement} onClick={() => {engagementCompleted(event, currentEngagement)}} bsStyle="primary">Completed?</Button>
       <Button onClick={
         () => {
+          console.log('eng id', currentEngagement.id);
           props.openVideo();
           videoCall();
         }

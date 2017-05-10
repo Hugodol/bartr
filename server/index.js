@@ -12,7 +12,10 @@ const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
   console.log('a user connected');
-  socket.join('P2Pvideo');
+  socket.on('join' data => {
+
+  })
+  // socket.join('P2Pvideo');
 });
 // io.on('disconnect', socket => console.log('a user disconnected'));
 
