@@ -137,7 +137,7 @@ class EditProfile extends React.Component {
       userInfo: {...this.state.userInfo, name: event.target.value}
     })
   }
- 
+
   newServiceChange(event) {
     this.setState({service: event.target.value})
   }
@@ -154,14 +154,14 @@ class EditProfile extends React.Component {
 
   addressChange(event, address) {
     geocodeByAddress(address || event.target.value, (err, latLng) => {
-      if (err) { 
+      if (err) {
         console.log('Error: ', err);
       } else {
         this.setState({
           userInfo: {...this.state.userInfo,
             address: address || event,
             geo_lat: latLng.lat,
-            geo_long: latLng.lng
+            geo_lng: latLng.lng
 
           }
         })
@@ -184,7 +184,7 @@ class EditProfile extends React.Component {
     })
     console.log('STATE: ', this.state.userInfo);
   }
-  
+
   render() {
     console.log('this.props in editprofile: ', this.props)
     return (

@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const http = require('http');
 const expressSession = require('express-session');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -7,14 +8,14 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // Socket io connection
-const server = require('http').createServer(app);
+const server = http.createServer(app);
 const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
-  console.log('a user connected');
+  console.log('USER CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   socket.on('join', data => {
     socket.join(data.name);
-  })
+  });
   socket.on('sendId', data => {
     io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
   });

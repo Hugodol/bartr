@@ -3,7 +3,7 @@ import * as addressAction from '../actions/actionTypes';
 var initialAddress = {
   address: "6060 Center Drive, Los Angeles, CA, United States",
   lat: 33.9759435,
-  long: -118.39072899999996
+  lng: -118.39072899999996
 }
 
 export default function AddressSearchReducer(state = initialAddress, action) {
@@ -13,7 +13,7 @@ export default function AddressSearchReducer(state = initialAddress, action) {
       return {
         address: action.address,
         lat: action.lat,
-        long: action.long
+        lng: action.lng
       };
     default:
       return state;

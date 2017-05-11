@@ -71,26 +71,28 @@ class EngageReqListEntries extends Component {
   }
 
   sendPeerId() {
-    // const socket = io();
+    const socket = io('http://localhost:5000');
     const peer = new Peer({key: 'ghwfzjto973krzfr'});
 
     let peerId;
     peer.on('open', id => {
       peerId = id;
-      // socket.emit('join', {name: this.state.currentEngagement.id});
-      // socket.emit('sendId', {
-      //   name: this.state.currentEngagement.id,
-      //   peerId: peerId
-      // });
-      // socket.on('fetchPeerId', data => {
-      //   if (data !== peerId) {
-      //     this.setState({remotePeerId: data});
-      //   }
-      // });
+      console.log('your peer id is', peerId);
+      socket.emit('join', {name: this.state.currentEngagement.id});
+      socket.emit('sendId', {
+        name: this.state.currentEngagement.id,
+        peerId: peerId
+      });
+      socket.on('fetchPeerId', data => {
+        if (data !== peerId) {
+          this.setState({remotePeerId: data});
+        }
+      });
     });
   }
 
   render() {
+    {this.state.remotePeerId ? console.log('remote id', this.state.remotePeerId) : null}
     return(
       <Well className="engagementlistentry">
         <Well onClick={() => this.messageAndId() } className="engagementlistentry">

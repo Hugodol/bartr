@@ -73,7 +73,7 @@ geo_lat: {
 type: Sequelize.FLOAT(10,6),
 allowNull: true
 },
-geo_long: {
+geo_lng: {
 type: Sequelize.FLOAT(10,6),
 allowNull: true
 },
@@ -91,19 +91,19 @@ private_key: {
 type: Sequelize.STRING,
 // allowNull: false,
       unique: true
-		},
-		public_key: {
-			type: Sequelize.STRING,
-			// allowNull: true
-		},
-		private_key: {
-			type: Sequelize.STRING,
-			// allowNull: false,
+    },
+    public_key: {
+      type: Sequelize.STRING,
+      // allowNull: true
+    },
+    private_key: {
+      type: Sequelize.STRING,
+      // allowNull: false,
       unique: true
 }
 }, {
 indexes: [
-{fields: ['geo_long', 'geo_lat']}
+{fields: ['geo_lng', 'geo_lat']}
 ]
 });
 

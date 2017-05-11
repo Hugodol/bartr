@@ -22,7 +22,7 @@ class UserProfile extends React.Component {
       withdrawAddress: '',
       modalOpen: false
     }
-    
+
     this.fetchUser = this.fetchUser.bind(this);
     this.fetchScore = this.fetchScore.bind(this);
     this.loadMap = this.loadMap.bind(this);
@@ -78,16 +78,16 @@ class UserProfile extends React.Component {
             address: res.data.address,
             service: userService,
             lat: res.data.geo_lat,
-            lng: res.data.geo_long,
+            lng: res.data.geo_lng,
             wallet: res.data.public_key,
             p: res.data.private_key,
             balance: balance.data
           })
         })
-        
-        
-        
-        
+
+
+
+
         this.loadMap();
       })
       .catch(err => {
@@ -99,7 +99,7 @@ class UserProfile extends React.Component {
     const homeUrl = "https://cdn3.iconfinder.com/data/icons/map-markers-1/512/residence-512.png";
       const google = window.google;
       const maps = google.maps;
-      
+
       const mapRef = this.refs.map;
       const node = ReactDOM.findDOMNode(mapRef);
 
