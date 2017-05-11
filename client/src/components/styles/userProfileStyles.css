@@ -14,6 +14,14 @@
   width: 52em;
 }
 
+video {
+    display: block;
+    object-fit: contain;
+    width: 500px;
+    margin: auto;
+}
+
+
 .card {
   background: #fff;
   border-radius: 1.4rem;
