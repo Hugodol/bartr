@@ -70,4 +70,57 @@ router.post('/', (req, res, next) => {
     .catch(next);
 })
 
+
+router.get('/:services', (req, res, next) => {
+  let reviewsAverage = [[], []];
+  let resultData = [];
+  let personName = [];
+
+  db.Service.findAll({ where: { id: req.params.services}})
+    .then((service) => {
+      return db.User.findAll({ where: { service_id: service[0].dataValues.id}})
+        .then((users) => {
+          return Promise.all(
+            users.map((person, i) => {
+              personName[i] = person.name;
+              return db.Review.findAll({ where: { sender_id: person.id}})
+                .then((reviews) => {
+                  if(reviews.length > 0){
+                    let avg = reviews.map((num) => num.score).reduce((acc, index) => acc + index, 0)/reviews.length;
+                    reviewsAverage[0].push(avg);
+                    let newObj = {};
+                    !newObj.hasOwnProperty(personName[i]) ? newObj[personName[i]] = avg : null;
+                    reviewsAverage[1].push(newObj);
+                    let bestRated = reviewsAverage[0].sort().reverse()[0];
+                    return reviewsAverage[1].map((provider) => {
+                      for(let key in provider){
+                        if(provider[key] === bestRated){
+                          //I need to implement getting service type by string from service id
+                          console.log("Person providing Service: ", provider);
+                          return provider;
+                        }
+                      }
+                    });
+                  }
+                });
+              })
+          );
+        })
+        .then((data) => {
+          //an array of promises
+          if(data.length > 0){
+            data = data.map((item) => item.filter(thing => thing !== undefined));
+            data = [].concat.apply([], data);
+            console.log("Getting the Users with their avg rating scores", data);
+            res.status(200).send(data);
+          }
+        })
+        .catch((error) => {
+          console.log("Too much crazy stuff going on do better: ", error);
+          res.status(404).send(error);
+        });
+    })
+});
+
+
 module.exports = router;

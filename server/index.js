@@ -6,6 +6,20 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+// Socket io connection
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
+
+io.on('connection', socket => {
+  console.log('a user connected');
+  socket.on('join' data => {
+    socket.join(data.name);
+  })
+  socket.on('sendId', data => {
+    io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
+  });
+});
+
 // if (process.env.NODE_ENV === 'development') {
   app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -35,6 +49,6 @@ app.use(function (err, req, res, next) {
 
 app.set('port', (process.env.PORT));
 
-app.listen(app.get('port'), function() {
+server.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
