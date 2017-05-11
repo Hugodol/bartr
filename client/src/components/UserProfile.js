@@ -6,6 +6,7 @@ import { PageHeader, Modal, FormGroup, InputGroup, Glyphicon, FormControl } from
 import axios from 'axios';
 import './styles/userProfileStyles.css';
 var QRCode = require('qrcode.react');
+import QrReader from 'react-qr-reader'
 
 class UserProfile extends React.Component {
   constructor (props) {
@@ -20,7 +21,8 @@ class UserProfile extends React.Component {
       listOfServices: [],
       balance: 0,
       withdrawAddress: '',
-      modalOpen: false
+      modalOpen: false,
+      qrValue: ''
     }
 
     this.fetchUser = this.fetchUser.bind(this);
@@ -30,6 +32,8 @@ class UserProfile extends React.Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleAddressEntry = this.handleAddressEntry.bind(this);
+    this.scanQR = this.scanQR.bind(this);
+    this.handleScan = this.handleScan.bind(this);
 
   }
 
@@ -152,6 +156,17 @@ class UserProfile extends React.Component {
     e.preventDefault();
     this.setState({withdrawAddress: e.target.value});
   } 
+  scanQR(e) {
+    e.preventDefault();
+    this.setState({showScanner: true});
+  }
+  handleScan(result) {
+    console.log("INSIDE HANDLE SCAN RESULT IS", result);
+    if (result) {
+      this.setState({showScanner: false, qrValue: result.slice(8)})
+      console.log(this.state);
+    }
+  }
 
   render() {
     console.log(this.state)
@@ -166,7 +181,7 @@ class UserProfile extends React.Component {
             <div className="user-profile-info">
               <h1 className="name">{this.state.name}</h1>
               <p className="service">{this.state.service ? this.state.service : null}</p>
-              <p className="wallet"><b>Wallet address:</b>{this.state.wallet}</p>
+              <p className="wallet"><b>Wallet address:</b> {this.state.wallet}</p>
               {this.state.wallet ? (<QRCode size="256" value={this.state.wallet} />) : <div></div>}
               <p className="balance"><b>Balance:</b> {this.state.balance / Math.pow(10, 8)} BTC</p>
             </div> 
@@ -186,15 +201,20 @@ class UserProfile extends React.Component {
               <p>Enter the bitcoin address you would like to withdraw funds to:</p>
               <FormGroup>
                 <InputGroup onChange={this.handleAddressEntry}>
-                  <FormControl type="text" />
+                  <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
                       <Glyphicon glyph="qrcode" />
                     </InputGroup.Addon>
+                    {this.state.showScanner ? (<QrReader
+                      onScan={this.handleScan}
+
+                     />) : <div></div>}  
                 </InputGroup>
               </FormGroup>
              </Modal.Body>
              <Modal.Footer>
                <Button onClick={(e) => {this.handleClose(e);}}>Cancel</Button>
+               <Button onClick={(e) => {this.scanQR(e);}}>Scan From QR Code</Button>
                <Button onClick={(e) => {this.handleClose(e); this.handleWithdraw(e)}}>Submit Withdrawal</Button>
              </Modal.Footer>
             </Modal>
