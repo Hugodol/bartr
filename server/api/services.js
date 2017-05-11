@@ -95,7 +95,6 @@ router.get('/:services', (req, res, next) => {
                     return reviewsAverage[1].map((provider) => {
                       for(let key in provider){
                         if(provider[key] === bestRated){
-                          //I need to implement getting service type by string from service id
                           console.log("Person providing Service: ", provider);
                           return provider;
                         }
@@ -110,9 +109,8 @@ router.get('/:services', (req, res, next) => {
           //an array of promises
           if(data.length > 0){
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
-            console.log("In the get users and scores server side: ", data);
-            // data = data.map((item) => item.filter(thing => thing !== undefined));
             data = [].concat.apply([], data);
+            data = data.filter((el, i, arr) => arr.indexOf(el) === i);
             console.log("Getting the Users with their avg rating scores", data);
             res.status(200).send(data);
           }
