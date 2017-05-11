@@ -19,7 +19,7 @@ router.get('/find', (req, res) => {
   let requested_services = req.query.services;
   let provided_distance = req.query.distance;
   let boundingBox = getBoundingBox([provided_lat, provided_lng], provided_distance)
-  console.log('location', provided_lat, provided_log)
+  console.log('location', provided_lat, provided_lng)
   console.log('box', boundingBox)
   let buildWhere = {};
   if (requested_services){
