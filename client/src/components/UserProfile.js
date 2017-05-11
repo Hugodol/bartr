@@ -6,7 +6,6 @@ import { PageHeader, Modal, FormGroup, InputGroup, Glyphicon, FormControl } from
 import axios from 'axios';
 import './styles/userProfileStyles.css';
 
-
 class UserProfile extends React.Component {
   constructor (props) {
     super (props);
@@ -131,7 +130,12 @@ class UserProfile extends React.Component {
   handleWithdraw(e) {
     e.preventDefault();
     console.log("In handleWithdraw address is", this.state.withdrawAddress);
-
+    // let auth = JSON.parse(localStorage.profile).user_id;
+    const config = {
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('id_token'),
+                'Content-Type': 'application/json' }
+    };
+    axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config);
   }
 
   handleOpen(e) { 
@@ -173,7 +177,7 @@ class UserProfile extends React.Component {
               onHide={this.hideModal}
               dialogClassName="custom-modal"
             >
-            <Modal.Header closeButton>
+            <Modal.Header>
               <Modal.Title id="contained-modal-title-lg">Withdraw Funds</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -188,6 +192,7 @@ class UserProfile extends React.Component {
               </FormGroup>
              </Modal.Body>
              <Modal.Footer>
+               <Button onClick={(e) => {this.handleClose(e);}}>Cancel</Button>
                <Button onClick={(e) => {this.handleClose(e); this.handleWithdraw(e)}}>Submit Withdrawal</Button>
              </Modal.Footer>
             </Modal>
