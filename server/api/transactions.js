@@ -7,7 +7,7 @@ const axios = require('axios');
 
 const $ = require('jquery');
 
-router.post('/create', (req, res, next) => {
+router.post('/create', (req, res) => {
   console.log("REQ IS", req.body);
   return easyBtc.getWallet(req.body.public_key).then(walletInfo => {
     console.log("FROM WIF:" + req.body.fromWIF);
@@ -20,13 +20,14 @@ router.post('/create', (req, res, next) => {
     let hash = easyBtc.newTransaction(req.body.fromWIF, walletInfo.txs[0].hash, req.body.toAddress, walletInfo.final_balance - 25);
     console.log("HASH IS", hash.hex);
     // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-    // axios.post('https://blockchain.info/pt/pushtx', json.stringify({"tx": hash})).then(data => {
+    // axios.post('https://blockchain.info/pushtx', {tx: hash.hex.serialize()}).then(data => {
     //     console.log(data);
     // })
 
     easyBtc.pushTransaction(hash.hex).then(data => {
-        console.log("DATA AFTER PUSH IS", data);
+      console.log("DATA AFTER PUSH IS", data);
     })
+
     res.status(200);
     res.send();
     // next();

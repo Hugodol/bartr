@@ -77,7 +77,9 @@ class UserProfile extends React.Component {
         })
         axios.get("https://blockchain.info/q/addressbalance/" + res.data.public_key +  "?confirmations=0&cors=true").then(balance => {
           console.log("BALANCE IS ", balance);
-          this.setState({...this.state,
+          axios.get("https://blockchain.info/ticker").then(tickers => {
+        
+            this.setState({...this.state,
             name: res.data.name,
             address: res.data.address,
             service: userService,
@@ -85,8 +87,11 @@ class UserProfile extends React.Component {
             lng: res.data.geo_lng,
             wallet: res.data.public_key,
             p: res.data.private_key,
-            balance: balance.data
+            balance: balance.data / Math.pow(10, 8),
+            USD: (balance.data / Math.pow(10, 8) * tickers.data.USD.last).toString().slice(0,4)
           })
+          })
+          
         })
 
 
@@ -163,7 +168,7 @@ class UserProfile extends React.Component {
   handleScan(result) {
     console.log("INSIDE HANDLE SCAN RESULT IS", result);
     if (result) {
-      this.setState({showScanner: false, qrValue: result.slice(8)})
+      this.setState({showScanner: false, qrValue: result.slice(8), withdrawAddress: result.slice(8)})
       console.log(this.state);
     }
   }
@@ -183,7 +188,8 @@ class UserProfile extends React.Component {
               <p className="service">{this.state.service ? this.state.service : null}</p>
               <p className="wallet"><b>Wallet address:</b> {this.state.wallet}</p>
               {this.state.wallet ? (<QRCode size="256" value={this.state.wallet} />) : <div></div>}
-              <p className="balance"><b>Balance:</b> {this.state.balance / Math.pow(10, 8)} BTC</p>
+              <p className="balance"><b>Balance:</b> {this.state.balance} BTC</p>
+              <p className="balanceUSD"><b>USD:</b> ${this.state.USD}</p>
             </div> 
             <div className="address">{this.state.address ? this.state.address : null}</div>
             <Link to='/editprofile'><button>Edit Profile</button></Link>
