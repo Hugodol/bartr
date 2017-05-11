@@ -2,8 +2,8 @@ import React from 'react';
 import axios from "axios";
 import { Link } from 'react-router';
 import _ from "lodash"
-import { Peer } from 'peerjs';
-// import { io } from 'socket.io';
+// import Peer from 'peerjs';
+// import io from 'socket.io-client';
 import EngageReqList from "./EngageReqList";
 import Chat from "./Chat";
 import VideoChat from './VideoChat.js';
@@ -29,6 +29,7 @@ class EngageReq extends React.Component {
 
   componentDidMount () {
     this.fetchCurrentEngagement();
+    // this.sendPeerId();
   }
 
   fetchCurrentEngagement() {
@@ -77,14 +78,20 @@ class EngageReq extends React.Component {
     this.setState({ videoModal: true });
   }
 
-  sendPeerId() {
-    // const socket = io.connect();
-    const peer = new Peer({key: process.env.PEERJS_API_KEY});
+  // sendPeerId() {
+  //   // const socket = io.connect();
+  //   const peer = new Peer({key: 'ghwfzjto973krzfr'});
 
-    let peerId;
-    peer.on('open', id => peerId = id);
-    // socket.to('P2Pvideo').emit('sendId', peerId);
-  }
+  //   console.log('eng id', this.state.id);
+
+  //   let peerId;
+  //   peer.on('open', id => {
+  //     peerId = id;
+  //     // sockert.emit({join: })
+  //     console.log('your peer id is', peerId);
+  //   });
+  //   // socket.to('P2Pvideo').emit('sendId', peerId);
+  // }
 
   render() {
     return(

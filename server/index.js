@@ -12,9 +12,13 @@ const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
   console.log('a user connected');
-  socket.join('P2Pvideo');
+  socket.on('join' data => {
+    socket.join(data.name);
+  })
+  socket.on('sendId', data => {
+    io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
+  });
 });
-// io.on('disconnect', socket => console.log('a user disconnected'));
 
 // if (process.env.NODE_ENV === 'development') {
   app.all('/*', function (req, res, next) {
