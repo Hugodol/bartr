@@ -17,7 +17,7 @@ class ServiceMap extends Component {
     super(props)
 
     this.state = {
-      selectedServiceType: 1,
+      selectedServiceType: null,
       foundServiceUsers: [],
       serviceTypes: [],
       highestRated: []
@@ -60,6 +60,7 @@ class ServiceMap extends Component {
     axios.get(API_ENDPOINT + '/api/services/' + this.state.selectedServiceType, config)
       .then(result => {
         console.log("Successfully got the highest rated service providers: ", result);
+        console.log(this.state.highestRated[0]);
         this.setState({
           highestRated: result.data
         });
@@ -224,7 +225,7 @@ class ServiceMap extends Component {
         <AddressSearchWithData />
         <br/>
         <p>Yo Mang</p>
-        <form>
+        <form onMouseLeave={this.loadHighestRatedServiceProviders}>
           <Dropdown onChange={this.changeSelectedService} onClick={this.loadHighestRatedServiceProviders} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
