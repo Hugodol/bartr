@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import { Button } from 'semantic-ui-react';
-import { PageHeader } from 'react-bootstrap';
+import { Button} from 'semantic-ui-react';
+import { PageHeader, Modal, FormGroup, InputGroup, Glyphicon, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import './styles/userProfileStyles.css';
-
 
 class UserProfile extends React.Component {
   constructor (props) {
@@ -18,13 +17,19 @@ class UserProfile extends React.Component {
       lat: '',
       lng: '',
       listOfServices: [],
-      balance: 0
+      balance: 0,
+      withdrawAddress: '',
+      modalOpen: false
     }
     
     this.fetchUser = this.fetchUser.bind(this);
     this.fetchScore = this.fetchScore.bind(this);
     this.loadMap = this.loadMap.bind(this);
     this.handleWithdraw = this.handleWithdraw.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleAddressEntry = this.handleAddressEntry.bind(this);
+
   }
 
   componentDidMount() {
@@ -74,6 +79,7 @@ class UserProfile extends React.Component {
             lat: res.data.geo_lat,
             lng: res.data.geo_long,
             wallet: res.data.public_key,
+            p: res.data.private_key,
             balance: balance.data
           })
         })
@@ -121,9 +127,30 @@ class UserProfile extends React.Component {
       })
       marker.setMap(this.map);
   }
-  handleWithdraw() {
-    console.log("In handleWithdraw");
+  handleWithdraw(e) {
+    e.preventDefault();
+    console.log("In handleWithdraw address is", this.state.withdrawAddress);
+    // let auth = JSON.parse(localStorage.profile).user_id;
+    const config = {
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('id_token'),
+                'Content-Type': 'application/json' }
+    };
+    axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config);
   }
+
+  handleOpen(e) { 
+    e.preventDefault();
+    this.setState({show: true})
+  }
+
+  handleClose(e) { 
+    e.preventDefault();
+    this.setState({show: false})  
+  }
+  handleAddressEntry(e) {
+    e.preventDefault();
+    this.setState({withdrawAddress: e.target.value});
+  } 
 
   render() {
     console.log(this.state)
@@ -142,7 +169,33 @@ class UserProfile extends React.Component {
               <p className="balance">Balance {this.state.balance / Math.pow(10, 8)} BTC</p>
             </div> 
             <div className="address">{this.state.address ? this.state.address : null}</div>
-            <Link to='/editprofile'><button>Edit Profile</button></Link><button onClick={this.handleWithdraw}>Withdraw funds</button>
+            <Link to='/editprofile'><button>Edit Profile</button></Link>
+            <button onClick={this.handleOpen}>Withdraw Funds</button>
+            <Modal
+              {...this.props}
+              show={this.state.show}
+              onHide={this.hideModal}
+              dialogClassName="custom-modal"
+            >
+            <Modal.Header>
+              <Modal.Title id="contained-modal-title-lg">Withdraw Funds</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Enter the bitcoin address you would like to withdraw funds to:</p>
+              <FormGroup>
+                <InputGroup onChange={this.handleAddressEntry}>
+                  <FormControl type="text" />
+                    <InputGroup.Addon>
+                      <Glyphicon glyph="qrcode" />
+                    </InputGroup.Addon>
+                </InputGroup>
+              </FormGroup>
+             </Modal.Body>
+             <Modal.Footer>
+               <Button onClick={(e) => {this.handleClose(e);}}>Cancel</Button>
+               <Button onClick={(e) => {this.handleClose(e); this.handleWithdraw(e)}}>Submit Withdrawal</Button>
+             </Modal.Footer>
+            </Modal>
           </div>
           <div className="google-maps" ref="map"/>
         </div>
