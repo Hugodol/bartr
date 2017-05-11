@@ -10,8 +10,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doAddressEntered: (address, lat, long) => {
-      dispatch(addressEntered(address, lat, long))
+    doAddressEntered: (address, lat, lng) => {
+      dispatch(addressEntered(address, lat, lng))
     }
     // addressEntered: bindActionCreators(addressEntered, dispatch)
   }

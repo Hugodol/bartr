@@ -27,7 +27,7 @@ router.get('/find', (req, res) => {
   }
     db.User.findAll({
       where: {
-        geo_long: {$gte: boundingBox[0], $lte: boundingBox[2]},
+        geo_lng: {$gte: boundingBox[0], $lte: boundingBox[2]},
         geo_lat: {$gte: boundingBox[1], $lte: boundingBox[3]}
       },
       include: [
@@ -110,6 +110,7 @@ router.get('/:services', (req, res, next) => {
           //an array of promises
           if(data.length > 0){
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
+            console.log("In the get users and scores server side: ", data);
             // data = data.map((item) => item.filter(thing => thing !== undefined));
             data = [].concat.apply([], data);
             console.log("Getting the Users with their avg rating scores", data);

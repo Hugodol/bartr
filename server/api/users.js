@@ -60,7 +60,7 @@ router.put('/', (req, res, next) => {
           name: req.body.name,
           address: req.body.address,
           geo_lat: req.body.geo_lat,
-          geo_long: req.body.geo_lng,
+          geo_lng: req.body.geo_lng,
           service_id: req.body.service_id,
           auth0_id: req.body.auth0_id
         })
