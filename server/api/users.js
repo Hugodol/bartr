@@ -32,7 +32,7 @@ router.post('/', (req, res, next) => {
     req.user['auth0_id'] = req.user['sub'];
     let wallet = easyBtc.newWallet()
     // console.log("WALLET IS ", wallet);
-   
+
     User.findOne({where: {email: req.user.email}}).then(result => {
       if(!result) {
         req.user.public_key = wallet.address;
@@ -48,7 +48,7 @@ router.post('/', (req, res, next) => {
           res.status(400).end('User creation failed due to duplicate email address');
         })
     })
-   
+
 })
 
 router.put('/', (req, res, next) => {

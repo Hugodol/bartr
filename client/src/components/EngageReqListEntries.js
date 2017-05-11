@@ -15,13 +15,16 @@ class EngageReqListEntries extends Component {
         video: true,
         audio: false
       },
-      remotePeerId: null
+      remotePeerId: null,
+      peer: null,
+      calling: false
     }
     this.setCurrMessages();
   }
 
   componentDidMount() {
     this.sendPeerId();
+    // this.answerCall();
   }
 
   messageAndId() {
@@ -63,16 +66,41 @@ class EngageReqListEntries extends Component {
   videoCall() {
     navigator.mediaDevices.getUserMedia(this.state.constraints)
       .then(stream => {
-        console.log('stream in videoCall', stream);
         let localVideo = document.getElementById('localVideo');
         localVideo.srcObject = stream;
+        let call = this.state.peer.call(this.state.remotePeerId, stream);
+        call.on('stream', remoteStream => {
+          let remoteVideo = document.getElementById('remoteVideo');
+          remoteVideo.srcObject = remoteStream;
+        });
       })
       .catch(err => console.log(err));
+  }
+
+  answerCall() {
+    // console.log('in answer call', this.state.peer);
+    // this.state.peer.on('call', call => {
+    //   console.log('call received');
+    //   navigator.mediaDevices.getUserMedia(this.state.constraints)
+    //   .then(stream => {
+    //     let localVideo = document.getElementById('localVideo');
+    //     localVideo.srcObject = stream;
+    //     call.answer(stream);
+    //     call.on('stream', remoteStream => {
+    //       let remoteVideo = document.getElementById('remoteVideo');
+    //       remoteVideo.srcObject = remoteStream;
+    //     });
+    //     this.props.openVideo();
+    //   })
+    //   .catch(err => console.log('Failed to get local stream' ,err));
+    // });
   }
 
   sendPeerId() {
     const socket = io('http://localhost:5000');
     const peer = new Peer({key: 'ghwfzjto973krzfr'});
+
+    this.setState({peer: peer});
 
     let peerId;
     peer.on('open', id => {
@@ -89,6 +117,22 @@ class EngageReqListEntries extends Component {
         }
       });
     });
+
+    peer.on('call', call => {
+      console.log('call received');
+      navigator.mediaDevices.getUserMedia(this.state.constraints)
+      .then(stream => {
+        let localVideo = document.getElementById('localVideo');
+        localVideo.srcObject = stream;
+        call.answer(stream);
+        call.on('stream', remoteStream => {
+          let remoteVideo = document.getElementById('remoteVideo');
+          remoteVideo.srcObject = remoteStream;
+        });
+        this.props.openVideo();
+      })
+      .catch(err => console.log('Failed to get local stream', err));
+    });
   }
 
   render() {
@@ -102,12 +146,25 @@ class EngageReqListEntries extends Component {
         </Well>
         <br/>
         <Button value={this.state.currentEngagement} onClick={() => {this.engagementCompleted(event, this.state.currentEngagement)}} bsStyle="primary">Completed?</Button>
-        <Button onClick={
-          () => {
-            this.props.openVideo();
-            this.videoCall();
+        {this.state.remotePeerId ? (
+          <Button
+            className="videoChatButton"
+            onClick={
+              () => {
+                this.props.openVideo();
+                this.videoCall();
+              }
+            }
+          >Video</Button>
+        ) : <Button disabled>Video</Button>}
+        <Button
+          onClick={
+            () => {
+              // this.answerCall();
+              // this.props.openVideo();
+            }
           }
-        }>Video</Button>
+        >Answer</Button>
       <br/>
     </Well>
     )
