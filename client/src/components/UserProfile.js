@@ -6,6 +6,7 @@ import { PageHeader, Modal, FormGroup, InputGroup, Glyphicon, FormControl } from
 import axios from 'axios';
 import './styles/userProfileStyles.css';
 var QRCode = require('qrcode.react');
+import QrReader from 'react-qr-reader'
 
 class UserProfile extends React.Component {
   constructor (props) {
@@ -30,6 +31,8 @@ class UserProfile extends React.Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleAddressEntry = this.handleAddressEntry.bind(this);
+    this.scanQR = this.scanQR.bind(this);
+    this.handleScan = this.handleScan.bind(this);
 
   }
 
@@ -152,6 +155,15 @@ class UserProfile extends React.Component {
     e.preventDefault();
     this.setState({withdrawAddress: e.target.value});
   } 
+  scanQR(e) {
+    e.preventDefault();
+    console.log("INSIDE OF SCAN QR")
+    this.setState({showScanner: true});
+    console.log("STATE IS", this.state);
+  }
+  handleScan(result) {
+    console.log("INSIDE HANDLE SCAN RESULT IS", result);
+  }
 
   render() {
     console.log(this.state)
@@ -166,7 +178,7 @@ class UserProfile extends React.Component {
             <div className="user-profile-info">
               <h1 className="name">{this.state.name}</h1>
               <p className="service">{this.state.service ? this.state.service : null}</p>
-              <p className="wallet"><b>Wallet address:</b>{this.state.wallet}</p>
+              <p className="wallet"><b>Wallet address:</b> {this.state.wallet}</p>
               {this.state.wallet ? (<QRCode size="256" value={this.state.wallet} />) : <div></div>}
               <p className="balance"><b>Balance:</b> {this.state.balance / Math.pow(10, 8)} BTC</p>
             </div> 
@@ -190,11 +202,16 @@ class UserProfile extends React.Component {
                     <InputGroup.Addon>
                       <Glyphicon glyph="qrcode" />
                     </InputGroup.Addon>
+                    {this.state.showScanner ? (<QrReader
+                      onScan={this.handleScan}
+
+                     />) : <div></div>}  
                 </InputGroup>
               </FormGroup>
              </Modal.Body>
              <Modal.Footer>
                <Button onClick={(e) => {this.handleClose(e);}}>Cancel</Button>
+               <Button onClick={(e) => {this.scanQR(e);}}>Scan From QR Code</Button>
                <Button onClick={(e) => {this.handleClose(e); this.handleWithdraw(e)}}>Submit Withdrawal</Button>
              </Modal.Footer>
             </Modal>
