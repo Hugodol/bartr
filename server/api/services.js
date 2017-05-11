@@ -111,6 +111,7 @@ router.get('/:services', (req, res, next) => {
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = [].concat.apply([], data);
             data = data.filter((el, i, arr) => arr.indexOf(el) === i);
+            data = data.length > 2 ? data.slice(0, 2) : data;
             console.log("Getting the Users with their avg rating scores", data);
             res.status(200).send(data);
           }
