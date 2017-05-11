@@ -14,12 +14,12 @@ router.get('/', (req, res) => {
 });
 
 router.get('/find', (req, res) => {
-  let provided_long = Number(req.query.long);
+  let provided_lng = Number(req.query.lng);
   let provided_lat = Number(req.query.lat);
   let requested_services = req.query.services;
   let provided_distance = req.query.distance;
-  let boundingBox = getBoundingBox([provided_lat, provided_long], provided_distance)
-  console.log('location', provided_lat, provided_long)
+  let boundingBox = getBoundingBox([provided_lat, provided_lng], provided_distance)
+  console.log('location', provided_lat, provided_lng)
   console.log('box', boundingBox)
   let buildWhere = {};
   if (requested_services){
@@ -109,7 +109,8 @@ router.get('/:services', (req, res, next) => {
         .then((data) => {
           //an array of promises
           if(data.length > 0){
-            data = data.map((item) => item.filter(thing => thing !== undefined));
+            data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
+            // data = data.map((item) => item.filter(thing => thing !== undefined));
             data = [].concat.apply([], data);
             console.log("Getting the Users with their avg rating scores", data);
             res.status(200).send(data);

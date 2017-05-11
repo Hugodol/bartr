@@ -21,7 +21,8 @@ class UserProfile extends React.Component {
       listOfServices: [],
       balance: 0,
       withdrawAddress: '',
-      modalOpen: false
+      modalOpen: false,
+      qrValue: ''
     }
     
     this.fetchUser = this.fetchUser.bind(this);
@@ -157,12 +158,14 @@ class UserProfile extends React.Component {
   } 
   scanQR(e) {
     e.preventDefault();
-    console.log("INSIDE OF SCAN QR")
     this.setState({showScanner: true});
-    console.log("STATE IS", this.state);
   }
   handleScan(result) {
     console.log("INSIDE HANDLE SCAN RESULT IS", result);
+    if (result) {
+      this.setState({showScanner: false, qrValue: result.slice(8)})
+      console.log(this.state);
+    }
   }
 
   render() {
@@ -198,7 +201,7 @@ class UserProfile extends React.Component {
               <p>Enter the bitcoin address you would like to withdraw funds to:</p>
               <FormGroup>
                 <InputGroup onChange={this.handleAddressEntry}>
-                  <FormControl type="text" />
+                  <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
                       <Glyphicon glyph="qrcode" />
                     </InputGroup.Addon>

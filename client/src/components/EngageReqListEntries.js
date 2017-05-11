@@ -106,15 +106,11 @@ class EngageReqListEntries extends Component {
             this.videoCall();
           }
         }>Video</Button>
-      </Well>
-
       <br/>
       <Button value={currentEngagement} onClick={() => {engagementCompleted(event, currentEngagement)}} bsStyle="primary">Completed?</Button>
 
     </Well>
   )
-
-    )
   }
 }
 
