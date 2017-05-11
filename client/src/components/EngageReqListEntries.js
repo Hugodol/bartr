@@ -71,20 +71,22 @@ class EngageReqListEntries extends Component {
   }
 
   sendPeerId() {
-    const socket = io();
+    // const socket = io();
     const peer = new Peer({key: 'ghwfzjto973krzfr'});
 
     let peerId;
     peer.on('open', id => {
       peerId = id;
-      socket.emit('join', {name: this.currentEngagement.id});
-      socket.emit('sendId', {
-        name: this.currentEngagement.id,
-        peerId: peerId
-      });
-      socket.on('fetchPeerId', data => {
-        this.setState({remotePeerId: data});
-      });
+      // socket.emit('join', {name: this.state.currentEngagement.id});
+      // socket.emit('sendId', {
+      //   name: this.state.currentEngagement.id,
+      //   peerId: peerId
+      // });
+      // socket.on('fetchPeerId', data => {
+      //   if (data !== peerId) {
+      //     this.setState({remotePeerId: data});
+      //   }
+      // });
     });
   }
 
