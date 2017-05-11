@@ -76,49 +76,50 @@ router.get('/:services', (req, res, next) => {
   let resultData = [];
   let personName = [];
 
-  db.Service.findAll({ where: { id: req.params.services}, limit: 1})
+  db.Service.findAll({ where: { id: req.params.services}})
     .then((service) => {
-      console.log("In The Find All Services Functon: ", service);
-      db.User.findAll({ where: { service_id: service[0].id}})
+      return db.User.findAll({ where: { service_id: service[0].dataValues.id}})
         .then((users) => {
-          console.log("In the Find All Users Who Provide a Type of Service Function: ", users);
-          users.forEach((person, i) => {
-            personName[i] = person.name;
-            console.log("Each Persons Id: ", person.id);
-            console.log("Each Persons Name: ", person.name);
-            db.Review.findAll({ where: { sender_id: person.id}})
-              .then((reviews) => {
-                if(reviews.length > 0){
-                  console.log("In the Find All Reviews of Users of a Particular Users Services Function... " + " User: " + personName[i], reviews);
-                  let avg = reviews.map((num) => num.score).reduce((acc, index) => acc + index, 0)/reviews.length;
-                  reviewsAverage[0].push(avg);
-                  console.log("" + personName[i] + "'s avg rating is: ", avg);
-                  let newObj = {};
-                  newObj[personName[i]] = avg;
-                  reviewsAverage[1].push(newObj);
-                  console.log("The REVIEWS AVERAGE SCORES FOR " + personName[i] + " IS: ", reviewsAverage);
-                  let bestRated = reviewsAverage[0].sort().reverse();
-                  console.log("THE BEST RATED FOR " + personName[i] + " IS: ", bestRated);
-                  bestRated = [bestRated[0]];
-                  console.log("Highest Rated Avg Scores Are: ", bestRated);
-                  reviewsAverage[1].map((data) => {
-                    for(let key in data){
-                      if(data[key] === bestRated[0]){
-                        resultData.push(data);
+          return Promise.all(
+            users.map((person, i) => {
+              personName[i] = person.name;
+              return db.Review.findAll({ where: { sender_id: person.id}})
+                .then((reviews) => {
+                  if(reviews.length > 0){
+                    let avg = reviews.map((num) => num.score).reduce((acc, index) => acc + index, 0)/reviews.length;
+                    reviewsAverage[0].push(avg);
+                    let newObj = {};
+                    !newObj.hasOwnProperty(personName[i]) ? newObj[personName[i]] = avg : null;
+                    reviewsAverage[1].push(newObj);
+                    let bestRated = reviewsAverage[0].sort().reverse()[0];
+                    return reviewsAverage[1].map((provider) => {
+                      for(let key in provider){
+                        if(provider[key] === bestRated){
+                          //I need to implement getting service type by string from service id
+                          console.log("Person providing Service: ", provider);
+                          return provider;
+                        }
                       }
-                    }
-                  });
-                console.log("Result Data So Far: ", resultData);
-                }
-              });
-          });
+                    });
+                  }
+                });
+              })
+          );
+        })
+        .then((data) => {
+          //an array of promises
+          if(data.length > 0){
+            data = data.map((item) => item.filter(thing => thing !== undefined));
+            data = [].concat.apply([], data);
+            console.log("Getting the Users with their avg rating scores", data);
+            res.status(200).send(data);
+          }
+        })
+        .catch((error) => {
+          console.log("Too much crazy stuff going on do better: ", error);
+          res.status(404).send(error);
         });
-    });
-    if(resultData.length > 0){
-      res.status(200).send(resultData);
-    } else {
-      res.status(404).send("Coudn't get Highest Rated Service Providers Due To Async Issues... Probably...");
-    }
+    })
 });
 
 
