@@ -17,9 +17,10 @@ class ServiceMap extends Component {
     super(props)
 
     this.state = {
-      selectedServiceType: null,
+      selectedServiceType: 1,
       foundServiceUsers: [],
-      serviceTypes: []
+      serviceTypes: [],
+      highestRated: []
     }
 
     this.loadMap = this.loadMap.bind(this);
@@ -30,22 +31,41 @@ class ServiceMap extends Component {
     this.loadServices = this.loadServices.bind(this);
     this.fetchRemainingServiceUsers = this.fetchRemainingServiceUsers.bind(this);
     // this.requestService = this.requestService.bind(this);
-
     this.googleMap = null;
     this.googleMapMarkers = [];
-
+    this.loadHighestRatedServiceProviders = this.loadHighestRatedServiceProviders.bind(this);
   }
 
   componentDidMount() {
     this.loadServicesTypes();
     this.loadMap();
-    this.loadServices()
+    this.loadServices();
   }
 
   componentDidUpdate() {
-    // this.loadServicesTypes();
     this.loadMap();
-    // this.loadServices()
+  }
+
+
+  loadHighestRatedServiceProviders(){
+    const config = {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.id_token
+      }
+    };
+
+    console.log("Before Axios Call!!!");
+
+    axios.get(API_ENDPOINT + '/api/services/' + this.state.selectedServiceType, config)
+      .then(result => {
+        console.log("Successfully got the highest rated service providers: ", result);
+        this.setState({
+          highestRated: result.data
+        });
+      })
+      .catch((error) => {
+        console.log("Failed to get the highest rated service providers: ", error);
+      })
   }
 
 
@@ -116,10 +136,10 @@ class ServiceMap extends Component {
         `<h1 id="firstHeading" class="firstHeading">${user.name}</h1>` +
         `<image wrapped size="medium" src="http://images4.wikia.nocookie.net/marveldatabase/images/9/9b/Ultimate_spiderman.jpg" height="85" width="85"/>` +
         `<div id="bodyContent">` + `<h2>${user.service.type}</h2>` + `</div>`;
-        
+
 //////////////////// If we want to add something so they can send a message with their request///////////////////////
 
-        // `<form id="map-form">` + `<input id="request-engage" type="text" placeholder="Send a Request!"/>` + 
+        // `<form id="map-form">` + `<input id="request-engage" type="text" placeholder="Send a Request!"/>` +
         // `<input type='submit' id="submit-request" />` + `</form>`
 
         let infoWindow = new maps.InfoWindow({
@@ -141,7 +161,7 @@ class ServiceMap extends Component {
     const homeUrl = "https://cdn3.iconfinder.com/data/icons/map-markers-1/512/residence-512.png";
       const google = window.google;
       const maps = google.maps;
-      
+
       const mapRef = this.refs.map;
       const node = ReactDOM.findDOMNode(mapRef);
 
@@ -196,16 +216,19 @@ class ServiceMap extends Component {
   }
 
   render() {
+    console.log("Service Options Are: ", this.state.serviceTypes);
     return (
       <div style={{textAlign:'center'}}  className="servicemap">
         <AddressSearchWithData />
         <br/>
+        <p>Yo Mang</p>
         <form>
-          <Dropdown onChange={this.changeSelectedService} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
+          <Dropdown onChange={(e) => {this.changeSelectedService; this.loadHighestRatedServiceProviders(e)}} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
         <br/>
         <div ref="map" style={{width: 1000, height: 500, margin: "auto"}}></div>
+        <p>Ayy mang</p>
         <br/>
         <br/>
         <br/>
