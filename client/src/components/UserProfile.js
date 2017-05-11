@@ -20,7 +20,7 @@ class UserProfile extends React.Component {
       listOfServices: [],
       balance: 0
     }
-    
+
     this.fetchUser = this.fetchUser.bind(this);
     this.fetchScore = this.fetchScore.bind(this);
     this.loadMap = this.loadMap.bind(this);
@@ -72,15 +72,15 @@ class UserProfile extends React.Component {
             address: res.data.address,
             service: userService,
             lat: res.data.geo_lat,
-            lng: res.data.geo_long,
+            lng: res.data.geo_lng,
             wallet: res.data.public_key,
             balance: balance.data
           })
         })
-        
-        
-        
-        
+
+
+
+
         this.loadMap();
       })
       .catch(err => {
@@ -92,7 +92,7 @@ class UserProfile extends React.Component {
     const homeUrl = "https://cdn3.iconfinder.com/data/icons/map-markers-1/512/residence-512.png";
       const google = window.google;
       const maps = google.maps;
-      
+
       const mapRef = this.refs.map;
       const node = ReactDOM.findDOMNode(mapRef);
 
@@ -140,7 +140,7 @@ class UserProfile extends React.Component {
               <p className="service">{this.state.service ? this.state.service : null}</p>
               <p className="wallet">Wallet address: {this.state.wallet}</p>
               <p className="balance">Balance {this.state.balance / Math.pow(10, 8)} BTC</p>
-            </div> 
+            </div>
             <div className="address">{this.state.address ? this.state.address : null}</div>
             <Link to='/editprofile'><button>Edit Profile</button></Link><button onClick={this.handleWithdraw}>Withdraw funds</button>
           </div>
