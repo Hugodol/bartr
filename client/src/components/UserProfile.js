@@ -22,7 +22,7 @@ class UserProfile extends React.Component {
       balance: 0,
       withdrawAddress: '',
       modalOpen: false,
-      qrValue: ''
+      qrValue: '',
     }
 
     this.fetchUser = this.fetchUser.bind(this);
@@ -204,12 +204,13 @@ class UserProfile extends React.Component {
                   <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
                       <Glyphicon glyph="qrcode" />
-                    </InputGroup.Addon>
-                    {this.state.showScanner ? (<QrReader
-                      onScan={this.handleScan}
-
-                     />) : <div></div>}  
+                    </InputGroup.Addon> 
                 </InputGroup>
+                {this.state.showScanner ? (<QrReader
+                      onScan={this.handleScan}
+                      style={{height: 480,
+                     width: 320}}
+                     />) : <div></div>} 
               </FormGroup>
              </Modal.Body>
              <Modal.Footer>
