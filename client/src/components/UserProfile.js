@@ -5,6 +5,7 @@ import { Button} from 'semantic-ui-react';
 import { PageHeader, Modal, FormGroup, InputGroup, Glyphicon, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import './styles/userProfileStyles.css';
+var QRCode = require('qrcode.react');
 
 class UserProfile extends React.Component {
   constructor (props) {
@@ -167,6 +168,7 @@ class UserProfile extends React.Component {
               <p className="service">{this.state.service ? this.state.service : null}</p>
               <p className="wallet">Wallet address: {this.state.wallet}</p>
               <p className="balance">Balance {this.state.balance / Math.pow(10, 8)} BTC</p>
+              {this.state.wallet ? (<QRCode size="256" value={this.state.wallet} />) : <div></div>}
             </div> 
             <div className="address">{this.state.address ? this.state.address : null}</div>
             <Link to='/editprofile'><button>Edit Profile</button></Link>

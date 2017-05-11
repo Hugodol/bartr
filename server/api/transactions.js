@@ -17,14 +17,12 @@ router.post('/create', (req, res, next) => {
     // console.log("FINAL BALANCE CONVERSION", walletInfo.final_balance / Math.pow(10, 2));
     // let value = Number(Math.floor(walletInfo.final_balance / Math.pow(10, 2)));
     // console.log("VALUE IS", value);
-    let hash = easyBtc.newTransaction(req.body.fromWIF, walletInfo.txs[0].hash, "1FReLmtSrZJkxvBMVLaVMtct9MWvXYH6dL", walletInfo.final_balance - 25);
+    let hash = easyBtc.newTransaction(req.body.fromWIF, walletInfo.txs[0].hash, req.body.toAddress, walletInfo.final_balance - 25);
     console.log("HASH IS", hash.hex);
     // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
     // axios.post('https://blockchain.info/pt/pushtx', json.stringify({"tx": hash})).then(data => {
     //     console.log(data);
     // })
-
-
 
     easyBtc.pushTransaction(hash.hex).then(data => {
         console.log("DATA AFTER PUSH IS", data);
