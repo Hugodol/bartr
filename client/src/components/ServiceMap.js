@@ -221,12 +221,14 @@ class ServiceMap extends Component {
       <div style={{textAlign:'center'}}  className="servicemap">
         <AddressSearchWithData />
         <br/>
+        <p>Yo Mang</p>
         <form>
           <Dropdown onChange={(e) => {this.changeSelectedService; this.loadHighestRatedServiceProviders(e)}} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
         <br/>
         <div ref="map" style={{width: 1000, height: 500, margin: "auto"}}></div>
+        <p>Ayy mang</p>
         <br/>
         <br/>
         <br/>
