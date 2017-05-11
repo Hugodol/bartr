@@ -11,8 +11,8 @@ const VideoChat = props => {
         </Modal.Header>
 
         <Modal.Body>
-          <video id="remoteVideo" autoPlay></video>
-          <video id="localVideo" autoPlay></video>
+          <video id="remoteVideo" autoPlay ></video>
+          <video id="localVideo" autoPlay muted ></video>
         </Modal.Body>
 
         <Modal.Footer>

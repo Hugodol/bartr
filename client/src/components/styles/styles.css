@@ -327,8 +327,13 @@ h2.title {
   margin: 0 auto !important;
 }
 
-.videoChatButton{
+.videoChatButtonOn{
+  border-radius: 25px;
   background-color: green;
+}
+
+.videoChatButtonOff{
+  border-radius: 25px;
 }
 
 .modal-dialog{

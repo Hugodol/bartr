@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, ButtonControl, Well } from 'react-bootstrap';
+import { Button, ButtonControl, Well, Glyphicon } from 'react-bootstrap';
 import axios from 'axios';
 import swal from 'sweetalert';
 import Peer from 'peerjs';
 import io from 'socket.io-client';
+import VideoChat from './VideoChat.js';
 
 class EngageReqListEntries extends Component {
   constructor(props) {
@@ -17,14 +18,16 @@ class EngageReqListEntries extends Component {
       },
       remotePeerId: null,
       peer: null,
-      calling: false
+      calling: false,
+      videoModal: false
     }
     this.setCurrMessages();
+    this.closeVideo = this.closeVideo.bind(this);
+    this.openVideo = this.openVideo.bind(this);
   }
 
   componentDidMount() {
     this.sendPeerId();
-    // this.answerCall();
   }
 
   messageAndId() {
@@ -77,25 +80,6 @@ class EngageReqListEntries extends Component {
       .catch(err => console.log(err));
   }
 
-  answerCall() {
-    // console.log('in answer call', this.state.peer);
-    // this.state.peer.on('call', call => {
-    //   console.log('call received');
-    //   navigator.mediaDevices.getUserMedia(this.state.constraints)
-    //   .then(stream => {
-    //     let localVideo = document.getElementById('localVideo');
-    //     localVideo.srcObject = stream;
-    //     call.answer(stream);
-    //     call.on('stream', remoteStream => {
-    //       let remoteVideo = document.getElementById('remoteVideo');
-    //       remoteVideo.srcObject = remoteStream;
-    //     });
-    //     this.props.openVideo();
-    //   })
-    //   .catch(err => console.log('Failed to get local stream' ,err));
-    // });
-  }
-
   sendPeerId() {
     const socket = io('http://localhost:5000');
     // const socket = io();
@@ -120,20 +104,19 @@ class EngageReqListEntries extends Component {
     });
 
     peer.on('call', call => {
-      console.log('call received');
       let context = this;
       swal({
         title: 'Someone is calling you!',
         text: "Accept call?",
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: "#337AB7",
         confirmButtonText: "Accept",
         closeOnConfirm: true
       },
       function(){
         navigator.mediaDevices.getUserMedia(context.state.constraints)
         .then(stream => {
-          context.props.openVideo();
+          context.openVideo();
           let localVideo = document.getElementById('localVideo');
           localVideo.srcObject = stream;
           call.answer(stream);
@@ -147,8 +130,15 @@ class EngageReqListEntries extends Component {
     });
   }
 
+  closeVideo() {
+    this.setState({ videoModal: false });
+  }
+
+  openVideo() {
+    this.setState({ videoModal: true });
+  }
+
   render() {
-    {this.state.remotePeerId ? console.log('remote id', this.state.remotePeerId) : null}
     return(
       <Well className="engagementlistentry">
         <Well onClick={() => this.messageAndId() } className="engagementlistentry">
@@ -160,24 +150,19 @@ class EngageReqListEntries extends Component {
         <Button value={this.state.currentEngagement} onClick={() => {this.engagementCompleted(event, this.state.currentEngagement)}} bsStyle="primary">Completed?</Button>
         {this.state.remotePeerId ? (
           <Button
-            className="videoChatButton"
+            className="videoChatButtonOn"
             onClick={
               () => {
-                this.props.openVideo();
+                this.openVideo();
                 this.videoCall();
               }
             }
-          >Video</Button>
-        ) : <Button disabled>Video</Button>}
-        <Button
-          onClick={
-            () => {
-              // this.answerCall();
-              // this.props.openVideo();
-            }
-          }
-        >Answer</Button>
+          ><Glyphicon glyph="facetime-video" /></Button>
+        ) : <Button className="videoChatButtonOff" disabled><Glyphicon glyph="facetime-video" /></Button>}
       <br/>
+      {this.state.videoModal ?
+          <VideoChat closeVideo={this.closeVideo}/>
+        : null}
     </Well>
     )
   }
