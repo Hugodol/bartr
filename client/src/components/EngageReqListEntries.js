@@ -121,18 +121,29 @@ class EngageReqListEntries extends Component {
 
     peer.on('call', call => {
       console.log('call received');
-      navigator.mediaDevices.getUserMedia(this.state.constraints)
-      .then(stream => {
-        this.props.openVideo();
-        let localVideo = document.getElementById('localVideo');
-        localVideo.srcObject = stream;
-        call.answer(stream);
-        call.on('stream', remoteStream => {
-          let remoteVideo = document.getElementById('remoteVideo');
-          remoteVideo.srcObject = remoteStream;
-        });
-      })
-      .catch(err => console.log('Failed to get local stream', err));
+      let context = this;
+      swal({
+        title: 'Someone is calling you!',
+        text: "Accept call?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Accept",
+        closeOnConfirm: true
+      },
+      function(){
+        navigator.mediaDevices.getUserMedia(context.state.constraints)
+        .then(stream => {
+          context.props.openVideo();
+          let localVideo = document.getElementById('localVideo');
+          localVideo.srcObject = stream;
+          call.answer(stream);
+          call.on('stream', remoteStream => {
+            let remoteVideo = document.getElementById('remoteVideo');
+            remoteVideo.srcObject = remoteStream;
+          });
+        })
+        .catch(err => console.log('Failed to get local stream', err));
+      });
     });
   }
 
