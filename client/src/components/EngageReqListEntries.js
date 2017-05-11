@@ -98,7 +98,7 @@ class EngageReqListEntries extends Component {
 
   sendPeerId() {
     const socket = io('http://localhost:5000');
-    const peer = new Peer({key: 'ghwfzjto973krzfr'});
+    const peer = new Peer({key: PEERS_API_KEY});
 
     this.setState({peer: peer});
 
