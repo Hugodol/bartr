@@ -17,7 +17,7 @@ class ServiceMap extends Component {
     super(props)
 
     this.state = {
-      selectedServiceType: null,
+      selectedServiceType: 1,
       foundServiceUsers: [],
       serviceTypes: [],
       highestRated: []
@@ -31,11 +31,9 @@ class ServiceMap extends Component {
     this.loadServices = this.loadServices.bind(this);
     this.fetchRemainingServiceUsers = this.fetchRemainingServiceUsers.bind(this);
     // this.requestService = this.requestService.bind(this);
-
     this.googleMap = null;
     this.googleMapMarkers = [];
     this.loadHighestRatedServiceProviders = this.loadHighestRatedServiceProviders.bind(this);
-
   }
 
   componentDidMount() {
@@ -46,10 +44,7 @@ class ServiceMap extends Component {
   }
 
   componentDidUpdate() {
-    // this.loadServicesTypes();
     this.loadMap();
-    // this.loadServices()
-    this.loadHighestRatedServiceProviders();
   }
 
 
@@ -58,9 +53,12 @@ class ServiceMap extends Component {
       headers: {
         'Authorization': 'Bearer ' + localStorage.id_token
       }
-    }
+    };
+
+    console.log("Before Axios Call!!!");
+
     axios.get(API_ENDPOINT + '/api/services/' + this.state.selectedServiceType, config)
-      .then((result) => {
+      .then(result => {
         console.log("Successfully got the highest rated service providers: ", result);
         this.setState({
           highestRated: result.data
@@ -205,6 +203,7 @@ class ServiceMap extends Component {
     this.setState({selectedServiceType: result.value}, () => {
       this.loadServices()
     });
+    console.log("Changed Service Type: ", this.state.selectedServiceType);
   }
 
   fetchRemainingServiceUsers(serviceusers) {
@@ -219,16 +218,19 @@ class ServiceMap extends Component {
   }
 
   render() {
+    console.log("Service Options Are: ", this.state.serviceTypes);
     return (
       <div style={{textAlign:'center'}}  className="servicemap">
         <AddressSearchWithData />
         <br/>
+        <p>Yo Mang</p>
         <form>
-          <Dropdown onChange={this.changeSelectedService} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
+          <Dropdown onChange={this.changeSelectedService} onClick={this.loadHighestRatedServiceProviders} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
         <br/>
         <div ref="map" style={{width: 1000, height: 500, margin: "auto"}}></div>
+        <p>Ayy mang</p>
         <br/>
         <br/>
         <br/>
