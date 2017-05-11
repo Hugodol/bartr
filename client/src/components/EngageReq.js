@@ -5,12 +5,14 @@ import _ from "lodash"
 import EngageReqList from "./EngageReqList";
 import Chat from "./Chat";
 import VideoChat from './VideoChat.js';
+import {Modal, FormGroup, InputGroup, FormControl, Glyphicon, Button} from 'react-bootstrap';
 
 class EngageReq extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      request: false,
       currentEngagement: [],
       messages: [],
       id : null,
@@ -23,6 +25,9 @@ class EngageReq extends React.Component {
       this.fetchChatMessages = this.fetchChatMessages.bind(this);
       this.closeVideo = this.closeVideo.bind(this);
       this.openVideo = this.openVideo.bind(this);
+      this.showModal = this.showModal.bind(this);
+      this.handleClose = this.handleClose.bind(this);
+      clearInterval(window.updates);
   }
 
   componentDidMount () {
@@ -42,6 +47,11 @@ class EngageReq extends React.Component {
     .catch(err =>{
         console.log("Error fetchCurrentEngagement", err);
     })
+  }
+
+  showModal() {
+    console.log("INSIDE SHOW MODAL ON ENGAGE REQ");
+    this.setState({show: true});
   }
 
   fetchCurrentId(selectedEngageId) {
@@ -75,6 +85,21 @@ class EngageReq extends React.Component {
     this.setState({ videoModal: true });
   }
 
+  handleClose(e) {
+    e.preventDefault();
+    console.log("HANDLE CLOSE");
+    this.setState({ show: false });
+  }
+
+  requestPayment() {
+    this.setState({request: true});
+  }
+
+  handleInput(e) {
+    e.preventDefault();
+    this.setState({invoiceAmount: e.target.value});
+  }
+
   render() {
     return(
       <div >
@@ -83,6 +108,7 @@ class EngageReq extends React.Component {
           style={{fontFamily: 'Ubuntu', fontWeight: "normal"}}
         >Current Engagements </h2>
         <EngageReqList
+          showModal={this.showModal}
           openVideo={this.openVideo}
           msgs={this.state.messages}
           currentEngagement={this.state.currentEngagement}
@@ -91,6 +117,8 @@ class EngageReq extends React.Component {
           fetchMessages={this.fetchMessages}
         />
         <Chat
+          request={this.state.request}
+          invoiceAmount={this.state.invoiceAmount}
           id={this.state.id}
           fetchChatMessages={this.fetchChatMessages}
           messages={this.state.messages}
@@ -99,6 +127,31 @@ class EngageReq extends React.Component {
         {this.state.videoModal ?
           <VideoChat closeVideo={this.closeVideo}/>
         : null}
+        <Modal
+              {...this.props}
+              show={this.state.show}
+              dialogClassName="custom-modal"
+            >
+            <Modal.Header>
+              <Modal.Title id="contained-modal-title-lg">Request Payment</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Enter the amount in BTC you would like to request:</p>
+              <FormGroup>
+                <InputGroup onChange={(e) => {this.handleInput(e) }}>
+                  <FormControl type="text"/>
+                    <InputGroup.Addon>
+                      <Glyphicon glyph="bitcoin" />
+                    </InputGroup.Addon> 
+                </InputGroup>
+                <br />
+              </FormGroup>
+             </Modal.Body>
+             <Modal.Footer>
+               <Button onClick={(e) => {this.handleClose(e);}}>Cancel</Button>
+               <Button onClick={(e) => {this.handleClose(e); this.requestPayment(e)}}>Submit Request</Button>
+             </Modal.Footer>
+            </Modal>
       </div>
     )
   }

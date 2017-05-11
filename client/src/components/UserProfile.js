@@ -35,12 +35,13 @@ class UserProfile extends React.Component {
     this.scanQR = this.scanQR.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.updateTicker = this.updateTicker.bind(this);
-    setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
+
   }
 
   componentDidMount() {
     this.getServices();
     this.fetchUser();
+    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
   }
 
   fetchScore() {
@@ -188,7 +189,13 @@ class UserProfile extends React.Component {
   handleScan(result) {
     console.log("INSIDE HANDLE SCAN RESULT IS", result);
     if (result) {
-      this.setState({showScanner: false, qrValue: result.slice(8), withdrawAddress: result.slice(8)})
+      var qIndex = result.indexOf("?");
+      if(qIndex > -1) {
+        result = result.slice(8, qIndex);
+      } else {
+         result = result.slice(8);
+      }
+      this.setState({showScanner: false, qrValue: result, withdrawAddress: result})
       console.log(this.state);
     }
   }
@@ -228,7 +235,7 @@ class UserProfile extends React.Component {
                 <InputGroup onChange={this.handleAddressEntry}>
                   <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
-                      <Glyphicon glyph="qrcode" />
+                      <Glyphicon glyph="bitcoin" />
                     </InputGroup.Addon> 
                 </InputGroup>
                 <br />

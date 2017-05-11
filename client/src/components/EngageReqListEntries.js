@@ -135,6 +135,7 @@ class EngageReqListEntries extends Component {
     });
   }
 
+
   render() {
     {this.state.remotePeerId ? console.log('remote id', this.state.remotePeerId) : null}
     return(
@@ -165,6 +166,7 @@ class EngageReqListEntries extends Component {
             }
           }
         >Answer</Button>
+        <Button onClick={this.props.showModal}>Request Payment</Button>
       <br/>
     </Well>
     )
