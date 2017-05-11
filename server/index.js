@@ -12,7 +12,7 @@ const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
   console.log('a user connected');
-  socket.on('join' data => {
+  socket.on('join', data => {
     socket.join(data.name);
   })
   socket.on('sendId', data => {

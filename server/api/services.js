@@ -109,7 +109,9 @@ router.get('/:services', (req, res, next) => {
         .then((data) => {
           //an array of promises
           if(data.length > 0){
-            data = data.map((item) => item.filter(thing => thing !== undefined));
+            console.log("In the get users and scores server side: ", data);
+            data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter(thing => thing !== undefined))
+            // data = data.map((item) => item.filter(thing => thing !== undefined));
             data = [].concat.apply([], data);
             console.log("Getting the Users with their avg rating scores", data);
             res.status(200).send(data);

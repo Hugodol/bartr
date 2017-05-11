@@ -40,6 +40,7 @@ class ServiceMap extends Component {
     this.loadServicesTypes();
     this.loadMap();
     this.loadServices();
+    this.loadHighestRatedServiceProviders();
   }
 
   componentDidUpdate() {
@@ -202,6 +203,7 @@ class ServiceMap extends Component {
     this.setState({selectedServiceType: result.value}, () => {
       this.loadServices()
     });
+    console.log("Changed Service Type: ", this.state.selectedServiceType);
   }
 
   fetchRemainingServiceUsers(serviceusers) {
@@ -223,7 +225,7 @@ class ServiceMap extends Component {
         <br/>
         <p>Yo Mang</p>
         <form>
-          <Dropdown onChange={(e) => {this.changeSelectedService; this.loadHighestRatedServiceProviders(e)}} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
+          <Dropdown onChange={this.changeSelectedService} onClick={this.loadHighestRatedServiceProviders} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
         <br/>
