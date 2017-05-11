@@ -330,3 +330,28 @@ h2.title {
 .videoChatButton{
   background-color: green;
 }
+
+.modal-dialog{
+  width: 60%;
+  min-width: 60%;
+  min-height: 60%;
+}
+
+#localVideo{
+  width: 25%;
+  height: auto;
+  position: absolute;
+  left: 15px;
+  bottom: 20px;
+  border: solid;
+}
+
+#remoteVideo{
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  border: solid;
+}

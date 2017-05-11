@@ -98,6 +98,7 @@ class EngageReqListEntries extends Component {
 
   sendPeerId() {
     const socket = io('http://localhost:5000');
+    // const socket = io();
     const peer = new Peer({key: PEERS_API_KEY});
 
     this.setState({peer: peer});
@@ -122,6 +123,7 @@ class EngageReqListEntries extends Component {
       console.log('call received');
       navigator.mediaDevices.getUserMedia(this.state.constraints)
       .then(stream => {
+        this.props.openVideo();
         let localVideo = document.getElementById('localVideo');
         localVideo.srcObject = stream;
         call.answer(stream);
@@ -129,7 +131,6 @@ class EngageReqListEntries extends Component {
           let remoteVideo = document.getElementById('remoteVideo');
           remoteVideo.srcObject = remoteStream;
         });
-        this.props.openVideo();
       })
       .catch(err => console.log('Failed to get local stream', err));
     });

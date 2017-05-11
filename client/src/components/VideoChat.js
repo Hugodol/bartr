@@ -5,7 +5,7 @@ const VideoChat = props => {
 
   return(
     <div className="static-modal">
-      <Modal.Dialog>
+      <Modal.Dialog className="videoChatModal">
         <Modal.Header>
           <Modal.Title>Video Chat</Modal.Title>
         </Modal.Header>
