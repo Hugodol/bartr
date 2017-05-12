@@ -328,10 +328,6 @@ h2.title {
   margin: 0 auto !important;
 }
 
-.videoChatButtonOn{
-  border-radius: 25px;
-  background-color: green;
-}
 
 .featuredUsers{
   display: block;
@@ -350,8 +346,20 @@ h2.title {
   left: 240px;
 }
 
-.videoChatButtonOff{
+.videoChatButtonOn{
+  width: 36px;
   border-radius: 25px;
+  opacity: 2.65 !important;
+  background-color: green;
+  float: right;
+}
+
+.videoChatButtonOff{
+  width: 36px;
+  border-radius: 25px;
+  opacity: 2.65 !important;
+  background-color: red;
+  float: right;
 }
 
 .modal-dialog{
@@ -365,7 +373,7 @@ h2.title {
   height: auto;
   position: absolute;
   left: 15px;
-  bottom: 20px;
+  bottom: 15px;
   border: solid;
 }
 
