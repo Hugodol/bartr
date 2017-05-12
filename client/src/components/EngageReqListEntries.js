@@ -28,6 +28,12 @@ class EngageReqListEntries extends Component {
 
   componentDidMount() {
     this.sendPeerId();
+    console.log('List entry mounted');
+  }
+
+  componentWillUnmount() {
+    // this.state.peer.destroy();
+    console.log('List entry unmounted');
   }
 
   messageAndId() {
@@ -67,6 +73,9 @@ class EngageReqListEntries extends Component {
   }
 
   videoCall() {
+    if (!this.state.peer) {
+      this.sendPeerId();
+    }
     navigator.mediaDevices.getUserMedia(this.state.constraints)
       .then(stream => {
         let localVideo = document.getElementById('localVideo');
@@ -100,6 +109,12 @@ class EngageReqListEntries extends Component {
         if (data !== peerId) {
           this.setState({remotePeerId: data});
         }
+        if (!this.state.remotePeerId) {
+          socket.emit('sendId', {
+            name: this.state.currentEngagement.id,
+            peerId: peerId
+          });
+        }
       });
     });
 
@@ -132,6 +147,7 @@ class EngageReqListEntries extends Component {
 
   closeVideo() {
     this.setState({ videoModal: false });
+    this.state.peer.destroy();
   }
 
   openVideo() {

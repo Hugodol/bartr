@@ -236,7 +236,7 @@ class ServiceMap extends Component {
           <h1><u>Featured {this.state.foundServiceUsers[0]['service']['type']}(s)</u></h1>
           {this.state.highestRated.map((servicer) => (
             <div>
-              <p onClick={(event, user) => {requestService(event, this.state.foundServiceUsers)}><b>Request Service From {Object.keys(servicer)[0]}</Link></b></p>
+              <p onClick={(event, user) => {requestService(event, this.state.foundServiceUsers)}}><b>Request Service From {Object.keys(servicer)[0]}</b></p>
               <div className="stars">
                 <ReactStars count={servicer[Object.keys(servicer).map(zz => [zz])[0]]} half={true} size={30} color1={'#ffd700'} />
               </div>
