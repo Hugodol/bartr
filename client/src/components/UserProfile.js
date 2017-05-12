@@ -35,13 +35,32 @@ class UserProfile extends React.Component {
     this.scanQR = this.scanQR.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.updateTicker = this.updateTicker.bind(this);
-
+    this.sendFinancialDataEmail = this.sendFinancialDataEmail.bind(this);
   }
 
   componentDidMount() {
     this.getServices();
     this.fetchUser();
-    // window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
+    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 5000);
+  }
+  
+  componentWillUnmount() {
+    clearInterval(window.updates); 
+  }
+
+  sendFinancialDataEmail(){
+    axios.post(API_ENDPOINT + '/api/emails/send', {
+      btcAmount: this.state.balance,
+      dollarAmount: this.state.USD,
+      email: this.state.email,
+      name: this.state.name
+    })
+    .then((data) => {
+      console.log("Send the email to " + this.state.name + " at " + this.state.email + ". DATA IS: ", data);
+    })
+    .catch((error) => {
+      console.log("Couldn't Send the email to " + this.state.name + " at " + this.state.email + ". ERROR IS: ", error);
+    });
   }
 
   fetchScore() {
@@ -83,6 +102,7 @@ class UserProfile extends React.Component {
             this.setState({...this.state,
             name: res.data.name,
             address: res.data.address,
+            email: res.data.email,
             service: userService,
             lat: res.data.geo_lat,
             lng: res.data.geo_lng,
@@ -95,10 +115,6 @@ class UserProfile extends React.Component {
           })
 
         })
-
-
-
-
         this.loadMap();
       })
       .catch(err => {
@@ -167,6 +183,7 @@ class UserProfile extends React.Component {
     axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config).then(data => {
       this.render();
     });
+    this.sendFinancialDataEmail();
   }
 
   handleOpen(e) {
@@ -191,9 +208,10 @@ class UserProfile extends React.Component {
     if (result) {
       var qIndex = result.indexOf("?");
       if(qIndex > -1) {
-        result = result.slice(8, qIndex);
-      } else {
-         result = result.slice(8);
+        result = result.slice(0, qIndex);
+      } 
+      if(result[0] === 'b') {
+        result = result.slice(8);
       }
       this.setState({showScanner: false, qrValue: result, withdrawAddress: result})
       console.log(this.state);

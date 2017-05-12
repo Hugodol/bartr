@@ -85,12 +85,10 @@ const User = sql.define('user', {
   },
   public_key: {
     type: Sequelize.STRING,
-  // allowNull: false,
     unique: true
   },
   private_key: {
     type: Sequelize.STRING,
-  // allowNull: false,
     unique: true
   }
 }, {
