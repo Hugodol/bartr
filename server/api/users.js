@@ -6,6 +6,7 @@ const User = require('../db').User;
 const Service = require('../db/index').Service;
 const router = require('express').Router();
 const findAuth0User = require('./util').findAuth0User;
+var Cryptr = require('cryptr');
 
 router.get('/:auth0_id', (req, res, next) => {
   User.findOne({
@@ -34,7 +35,7 @@ router.post('/', (req, res, next) => {
     // console.log("WALLET IS ", wallet);
 
     User.findOne({where: {email: req.user.email}}).then(result => {
-      if(!result) {
+      if (!result) {
         req.user.public_key = wallet.address;
         req.user.private_key = wallet.wif;
       }

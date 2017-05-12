@@ -41,7 +41,11 @@ class UserProfile extends React.Component {
   componentDidMount() {
     this.getServices();
     this.fetchUser();
-    // window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
+    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 5000);
+  }
+  
+  componentWillUnmount() {
+    clearInterval(window.updates); 
   }
 
   sendFinancialDataEmail(){
@@ -111,10 +115,6 @@ class UserProfile extends React.Component {
           })
 
         })
-
-
-
-
         this.loadMap();
       })
       .catch(err => {
@@ -208,9 +208,10 @@ class UserProfile extends React.Component {
     if (result) {
       var qIndex = result.indexOf("?");
       if(qIndex > -1) {
-        result = result.slice(8, qIndex);
-      } else {
-         result = result.slice(8);
+        result = result.slice(0, qIndex);
+      } 
+      if(result[0] === 'b') {
+        result = result.slice(8);
       }
       this.setState({showScanner: false, qrValue: result, withdrawAddress: result})
       console.log(this.state);
