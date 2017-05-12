@@ -41,7 +41,7 @@ class UserProfile extends React.Component {
   componentDidMount() {
     this.getServices();
     this.fetchUser();
-    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
+    // window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
   }
 
   fetchScore() {
@@ -93,7 +93,7 @@ class UserProfile extends React.Component {
             USD: (balance.data / Math.pow(10, 8) * tickers.data.USD.last).toString().slice(0,4)
           })
           })
-          
+
         })
 
 
@@ -169,19 +169,19 @@ class UserProfile extends React.Component {
     });
   }
 
-  handleOpen(e) { 
+  handleOpen(e) {
     e.preventDefault();
     this.setState({show: true})
   }
 
-  handleClose(e) { 
+  handleClose(e) {
     e.preventDefault();
-    this.setState({show: false})  
+    this.setState({show: false})
   }
   handleAddressEntry(e) {
     e.preventDefault();
     this.setState({withdrawAddress: e.target.value});
-  } 
+  }
   scanQR(e) {
     e.preventDefault();
     this.setState({showScanner: true});
@@ -216,7 +216,7 @@ class UserProfile extends React.Component {
               {this.state.wallet ? (<QRCode size="256" value={this.state.wallet} />) : <div></div>}
               <p className="balance"><b>Balance:</b> {this.state.balance} BTC</p>
               <p className="balanceUSD"><b>USD:</b> ${this.state.USD}</p>
-            </div> 
+            </div>
             <div className="address">{this.state.address ? this.state.address : null}</div>
             <Link to='/editprofile'><button>Edit Profile</button></Link>
             <button onClick={this.handleOpen}>Withdraw Funds</button>
@@ -236,14 +236,14 @@ class UserProfile extends React.Component {
                   <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
                       <Glyphicon glyph="bitcoin" />
-                    </InputGroup.Addon> 
+                    </InputGroup.Addon>
                 </InputGroup>
                 <br />
                 {this.state.showScanner ? (<QrReader
                       onScan={this.handleScan}
-                      
+
                      maxImageSize={3000}
-                     />) : <div></div>} 
+                     />) : <div></div>}
               </FormGroup>
              </Modal.Body>
              <Modal.Footer>
