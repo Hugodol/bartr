@@ -88,19 +88,11 @@ type: Sequelize.STRING,
       unique: true
 },
 private_key: {
-type: Sequelize.STRING,
+  type: Sequelize.STRING,
 // allowNull: false,
       unique: true
-    },
-    public_key: {
-      type: Sequelize.STRING,
-      // allowNull: true
-    },
-    private_key: {
-      type: Sequelize.STRING,
-      // allowNull: false,
-      unique: true
 }
+
 }, {
 indexes: [
 {fields: ['geo_lng', 'geo_lat']}

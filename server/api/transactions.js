@@ -4,29 +4,45 @@ const router = require('express').Router();
 const easyBtc = require('easy-bitcoin-js');
 const request = require('request');
 const axios = require('axios');
+var bitcoin = require("bitcoinjs-lib");
+var bigi    = require("bigi");
+var buffer  = require('buffer');
+const CircularJSON = require('circular-json');
+var cs = require('coinstring');
+var buffer  = require('buffer');
 
-const $ = require('jquery');
 
 router.post('/create', (req, res) => {
   if(req.body.hasOwnProperty("fromWIF") && req.body.hasOwnProperty("toAddress")) {
     easyBtc.getWallet(req.body.public_key).then(walletInfo => {
       console.log("FROM WIF:" + req.body.fromWIF);
-      console.log("tx: " + walletInfo.txs[0].hash);
-      // console.log("to:" + req.body.toAddress);
+      console.log("to:" + req.body.toAddress);
       console.log("RAW FINAL BALANCE IN SATOSHIS", walletInfo.final_balance)
-      // console.log("FINAL BALANCE CONVERSION", walletInfo.final_balance / Math.pow(10, 2));
-      // let value = Number(Math.floor(walletInfo.final_balance / Math.pow(10, 2)));
-      // console.log("VALUE IS", value);
-      let hash = easyBtc.newTransaction(req.body.fromWIF, walletInfo.txs[0].hash, req.body.toAddress, walletInfo.final_balance - 25);
-      console.log("HASH IS", hash.hex);
-      // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-      // axios.post('https://blockchain.info/pushtx', {tx: hash.hex.serialize()}).then(data => {
-      //     console.log(data);
-      // })
+      console.log("PUBLIC KEY IS", req.body.public_key);
+      var newtx = {
+        inputs: [{addresses: [req.body.public_key]}],
+        outputs: [{addresses: [req.body.toAddress], value: walletInfo.final_balance - 75200}]
+      };
 
-      easyBtc.pushTransaction(hash.hex).then(data => {
-        console.log("DATA AFTER PUSH IS", data);
-      })
+      console.log("NEW TX STRINGIFIED", JSON.stringify(newtx));
+      axios.post('https://api.blockcypher.com/v1/btc/main/txs/new', newtx)
+         .then(function(updatedtx) {
+            console.log("UPDATED TX IS", updatedtx);
+            updatedtx = updatedtx.data;
+
+            var keys = bitcoin.ECPair.fromWIF(req.body.fromWIF);
+            console.log("KEYS ARE ", keys);
+            updatedtx.pubkeys = [];
+            updatedtx.signatures = updatedtx.tosign.map(function(tosign, n) {
+              updatedtx.pubkeys.push(keys.getPublicKeyBuffer().toString("hex"));
+              return keys.sign(new buffer.Buffer(tosign, "hex")).toDER().toString("hex");
+            });
+
+            updatedtx.preference = "high";
+            axios.post('https://api.blockcypher.com/v1/btc/main/txs/send', updatedtx).then(function(finaltx) {
+              console.log("FASTER FINAL TRANSACTION", finaltx);
+            })
+         })
     });
   }
     res.status(200);

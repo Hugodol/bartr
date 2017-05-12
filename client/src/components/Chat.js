@@ -65,6 +65,11 @@ class Chat extends React.Component {
     })
   }
 
+  newPayRequest() {
+
+  
+  }
+  
   handleIdAndMessage(event) {
     this.handleMessage(event);
     // this.changeId();
