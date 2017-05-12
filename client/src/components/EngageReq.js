@@ -14,8 +14,7 @@ class EngageReq extends React.Component {
       request: false,
       currentEngagement: [],
       messages: [],
-      id : null,
-      // videoModal: false
+      id : null
     }
       this.fetchMessages = this.fetchMessages.bind(this);
       this.fetchCurrentEngagement = this.fetchCurrentEngagement.bind(this);
@@ -74,14 +73,6 @@ class EngageReq extends React.Component {
     this.setState({messages:[chatMsg, ...this.state.messages]})
   }
 
-  // closeVideo() {
-  //   this.setState({ videoModal: false });
-  // }
-
-  // openVideo() {
-  //   this.setState({ videoModal: true });
-  // }
-
   handleClose(e) {
     e.preventDefault();
     console.log("HANDLE CLOSE");
@@ -120,7 +111,7 @@ class EngageReq extends React.Component {
           messages={this.state.messages}
           currentEngagement={this.state.currentEngagement}
         />
-      
+
         <Modal
               {...this.props}
               show={this.state.show}
@@ -136,7 +127,7 @@ class EngageReq extends React.Component {
                   <FormControl type="text"/>
                     <InputGroup.Addon>
                       <Glyphicon glyph="bitcoin" />
-                    </InputGroup.Addon> 
+                    </InputGroup.Addon>
                 </InputGroup>
                 <br />
               </FormGroup>

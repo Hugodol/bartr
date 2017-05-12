@@ -19,6 +19,7 @@ io.on('connection', socket => {
   socket.on('sendId', data => {
     io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
   });
+
   socket.on('leave', data => {
     socket.leave(data.name);
     io.sockets.in(data.name).emit('userLeft');

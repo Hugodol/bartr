@@ -37,7 +37,7 @@ class Routing extends React.Component {
     // creating store and history
     const store = createStoreWithMiddleware();
     const history = syncHistoryWithStore(hashHistory, store);
-    
+
     return (
       <Provider store={store}>
         <Router history={history}>

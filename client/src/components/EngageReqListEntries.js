@@ -18,7 +18,6 @@ class EngageReqListEntries extends Component {
       },
       remotePeerId: null,
       peer: null,
-      calling: false,
       videoModal: false,
       socket: null,
       stream: null
@@ -30,17 +29,17 @@ class EngageReqListEntries extends Component {
 
   componentDidMount() {
     this.sendPeerId();
-    console.log('List entry mounted');
   }
 
   componentWillUnmount() {
     this.state.socket.emit('leave',
       {name: this.state.currentEngagement.id}
     );
-    // this.state.remotePeerId = null;
-    // this.state.peer = null;
-    // this.state.socket = null;
-    console.log('List entry unmounted');
+    this.state.socket.disconnect();
+    this.setState({remotePeerId: null});
+    this.setState({peer: null});
+    this.setState({socket: null});
+    this.setState({stream: null});
   }
 
   messageAndId() {
@@ -80,10 +79,6 @@ class EngageReqListEntries extends Component {
   }
 
   videoCall() {
-    console.log('peer', this.state.peer);
-    // if (!this.state.peer) {
-    //   this.sendPeerId();
-    // }
     navigator.mediaDevices.getUserMedia(this.state.constraints)
       .then(stream => {
         this.setState({stream: stream});
@@ -117,6 +112,7 @@ class EngageReqListEntries extends Component {
       });
       socket.on('userLeft', () => {
         this.setState({remotePeerId: null});
+        this.setState({stream: null});
       });
       socket.on('fetchPeerId', data => {
         if (data !== peerId) {
@@ -134,7 +130,7 @@ class EngageReqListEntries extends Component {
     peer.on('call', call => {
       let context = this;
       swal({
-        title: 'Someone is calling you!',
+        title: `${this.state.currentEngagement.receiver.name} is calling you!`,
         text: "Accept call?",
         showCancelButton: true,
         confirmButtonColor: "#337AB7",
@@ -201,18 +197,4 @@ class EngageReqListEntries extends Component {
   }
 }
 
-  // currMessages = [...props.msgs, ...currMessages];
-
-  // const postReview = () => {
-  //   const config = {
-  //     headers: {'Authorization': 'Bearer ' + localStorage.id_token}
-  //   };
-  //   axios.post(API_ENDPOINT + '/api/reviews', config)
-  //        .then(data => {
-  //          console.log(data)
-  //        })
-  // }
-
 export default EngageReqListEntries
-
-// Add feature to write reviews from the sweetalert
