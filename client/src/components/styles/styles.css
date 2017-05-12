@@ -305,7 +305,7 @@ h2.title {
 .servicemap {
   background: url("http://7-themes.com/data_images/collection/3/4443457-cool-backgrounds.png");
   position: absolute;
-  height: 180vh;
+  height: 180;
   width: 100%;;
   margin: 0 auto !important;
 }
@@ -331,6 +331,23 @@ h2.title {
 .videoChatButtonOn{
   border-radius: 25px;
   background-color: green;
+}
+
+.featuredUsers{
+  display: block;
+  margin: 0 auto;
+  height: 210px;
+  background-color: #0994b2;
+  border: solid 2px rgba(0, 0, 0, .6);
+  width: 600px;
+  border-radius: 3px;
+}
+
+
+.featuredUsers > div > div{
+  display: block;
+  position: relative;
+  left: 240px;
 }
 
 .videoChatButtonOff{
