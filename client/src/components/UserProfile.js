@@ -35,13 +35,28 @@ class UserProfile extends React.Component {
     this.scanQR = this.scanQR.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.updateTicker = this.updateTicker.bind(this);
-
+    this.sendFinancialDataEmail = this.sendFinancialDataEmail.bind(this);
   }
 
   componentDidMount() {
     this.getServices();
     this.fetchUser();
     // window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
+  }
+
+  sendFinancialDataEmail(){
+    axios.post(API_ENDPOINT + '/api/emails/send', {
+      btcAmount: this.state.balance,
+      dollarAmount: this.state.USD,
+      email: this.state.email,
+      name: this.state.name
+    })
+    .then((data) => {
+      console.log("Send the email to " + this.state.name + " at " + this.state.email + ". DATA IS: ", data);
+    })
+    .catch((error) => {
+      console.log("Couldn't Send the email to " + this.state.name + " at " + this.state.email + ". ERROR IS: ", error);
+    });
   }
 
   fetchScore() {
@@ -83,6 +98,7 @@ class UserProfile extends React.Component {
             this.setState({...this.state,
             name: res.data.name,
             address: res.data.address,
+            email: res.data.email,
             service: userService,
             lat: res.data.geo_lat,
             lng: res.data.geo_lng,
@@ -167,6 +183,7 @@ class UserProfile extends React.Component {
     axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config).then(data => {
       this.render();
     });
+    this.state.sendFinancialDataEmail();
   }
 
   handleOpen(e) {
