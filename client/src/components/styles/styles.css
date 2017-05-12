@@ -351,6 +351,7 @@ h2.title {
   border-radius: 25px;
   opacity: 2.65 !important;
   background-color: green;
+  float: right;
 }
 
 .videoChatButtonOff{
@@ -358,6 +359,7 @@ h2.title {
   border-radius: 25px;
   opacity: 2.65 !important;
   background-color: red;
+  float: right;
 }
 
 .modal-dialog{

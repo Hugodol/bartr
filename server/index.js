@@ -15,11 +15,11 @@ io.on('connection', socket => {
   socket.on('join', data => {
     socket.join(data.name);
   });
+
   socket.on('sendId', data => {
     io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
   });
   socket.on('leave', data => {
-    console.log('LEAVE EVENT FIRED');
     socket.leave(data.name);
     io.sockets.in(data.name).emit('userLeft');
   })
