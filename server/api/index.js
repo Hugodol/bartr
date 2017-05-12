@@ -7,4 +7,8 @@ router.use('/services', require('./services'));
 router.use('/reviews', require('./reviews'));
 router.use('/transactions', require('./transactions'));
 
+//Send Email When Financial Data Transactions Occur
+router.use('/emails', require('./emails'));
+
+
 module.exports = router;

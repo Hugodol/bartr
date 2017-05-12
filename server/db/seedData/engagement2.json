@@ -9,6 +9,15 @@
     }
   },
   {
+    "model": "Engagement",
+    "data": {
+      "id": 4,
+      "sender_id": 1,
+      "receiver_id": 3,
+      "complete": "true"
+    }
+  },
+  {
     "model": "Message",
     "data": {
       "engagement_id": 2,
@@ -62,6 +71,15 @@
       "receiver_id": 2,
       "score" : 1,
       "review" : "Gave me a bad haircut, wish I didn't do this barter, bad deal for me"
+    }
+  },
+  {
+    "model": "Engagement",
+    "data": {
+      "id": 5,
+      "sender_id": 4,
+      "receiver_id": 5,
+      "complete": "true"
     }
   }
 ]

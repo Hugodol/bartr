@@ -305,7 +305,7 @@ h2.title {
 .servicemap {
   background: url("http://7-themes.com/data_images/collection/3/4443457-cool-backgrounds.png");
   position: absolute;
-  height: 180vh;
+  height: 180;
   width: 100%;;
   margin: 0 auto !important;
 }
@@ -328,6 +328,68 @@ h2.title {
   margin: 0 auto !important;
 }
 
-.videoChatButton{
+
+.featuredUsers{
+  display: block;
+  margin: 0 auto;
+  height: 210px;
+  background-color: #0994b2;
+  border: solid 2px rgba(0, 0, 0, .6);
+  width: 600px;
+  border-radius: 3px;
+}
+
+
+.featuredUsers > div > div{
+  display: block;
+  position: relative;
+  left: 240px;
+}
+
+.videoChatButtonOn{
+  width: 36px;
+  border-radius: 25px;
+  opacity: 2.65 !important;
   background-color: green;
+  float: right;
+}
+
+.videoChatButtonOff{
+  width: 36px;
+  border-radius: 25px;
+  opacity: 2.65 !important;
+  background-color: red;
+  float: right;
+}
+
+.modal-dialog{
+  width: 60%;
+  min-width: 60%;
+  min-height: 60%;
+}
+
+#localVideo{
+  width: 25%;
+  height: auto;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  border: solid;
+}
+
+#remoteVideo{
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  border: solid;
+}
+
+
+.rating-gly-star > input{
+  display: none;
+  visibility: hidden;
+
 }

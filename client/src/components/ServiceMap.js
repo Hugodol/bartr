@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import StarRating from 'react-star-rating';
+import { Link } from 'react-router';
 
 import Autocomplete from 'react-google-autocomplete'
 import { geocodeByAddress } from 'react-places-autocomplete'
@@ -40,12 +42,36 @@ class ServiceMap extends Component {
     this.loadServicesTypes();
     this.loadMap();
     this.loadServices();
-    this.loadHighestRatedServiceProviders();
+    // this.loadHighestRatedServiceProviders();
   }
 
   componentDidUpdate() {
     this.loadMap();
   }
+
+
+  requestService(event, user){
+      event.preventDefault();
+      const config = {
+        headers: {'Authorization': 'Bearer ' + localStorage.id_token}
+      };
+      axios.post(API_ENDPOINT + '/api/engagements', {
+        receiver_id: user.id
+      }, config)
+          .then(data => {
+            console.log('Engagement Created! ', data);
+            swal({
+              title: 'Requested Service!',
+              text: user.name + " for " + user.service.type + " service",
+              confirmButtonText: "Check Current Engagements in the Menu",
+              type: 'success'
+            })
+            this.fetchRemainingServiceUsers(data.data);
+          })
+          .catch(err => {
+            console.log('Error: ', err);
+          })
+    }
 
 
   loadHighestRatedServiceProviders(){
@@ -60,9 +86,9 @@ class ServiceMap extends Component {
     axios.get(API_ENDPOINT + '/api/services/' + this.state.selectedServiceType, config)
       .then(result => {
         console.log("Successfully got the highest rated service providers: ", result);
-        console.log(this.state.highestRated[0]);
         this.setState({
-          highestRated: result.data
+          highestRated: result.data,
+          ratings: result.data.map(servicer => servicer[Object.keys(servicer).map(zz => zz)])
         });
       })
       .catch((error) => {
@@ -219,21 +245,12 @@ class ServiceMap extends Component {
   }
 
   render() {
-    console.log("THE TOP SERVICE PROVIDERS INCLUDE: ", this.state.highestRated);
-    console.log("Service Options Are: ", this.state.serviceTypes);
-    return this.state.highestRated.length > 1 ? (
+
+    console.log(this.state.highestRated.map(servicer => servicer[Object.keys(servicer).map(zz => zz)[0]]))
+    return this.state.highestRated.length > 0 ? (
       <div style={{textAlign:'center'}}  className="servicemap">
         <AddressSearchWithData />
         <br/>
-        <div>
-          <h1><u>Featured {this.state.selectedServiceType}'s</u></h1>
-          {this.state.highestRated.map((servicer, i) => (
-            <div>
-              <p><b>{servicer[servicer.keys()[i]]}</b></p>
-              <p><i>Rating: {servicer[servicer.values()[i]]}</i></p>
-            </div>
-          ))}
-        </div>
         <form onMouseLeave={this.loadHighestRatedServiceProviders}>
           <Dropdown onChange={this.changeSelectedService} onClick={this.loadHighestRatedServiceProviders} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
@@ -241,31 +258,15 @@ class ServiceMap extends Component {
         <br/>
         <div ref="map" style={{width: 1000, height: 500, margin: "auto"}}></div>
         <br/>
-        <br/>
-        <br/>
-        <ServiceProviderListWithData style={{marginTop: "20px", left: 200}} fetchRemainingServiceUsers={this.fetchRemainingServiceUsers} users={this.state.foundServiceUsers} />
-      </div>
-    ) : this.state.highestRated.length < 2 && this.state.length !== 0 ? (
-      <div style={{textAlign:'center'}}  className="servicemap">
-        <AddressSearchWithData />
-        <br/>
-        <div>
-          <h1><u>Featured {this.state.selectedServiceType}'s</u></h1>
+        <div className="featuredUsers">
+          <h1><u>Featured {this.state.foundServiceUsers[0]['service']['type']}(s)</u></h1>
           {this.state.highestRated.map((servicer, i) => (
             <div>
-              <p><b>{servicer[servicer.keys()[i]]}</b></p>
-              <p><i>Rating: {servicer[servicer.values()[i]]}</i></p>
+              <p><b>{Object.keys(servicer)[0]}</b></p>
+              <StarRating totalStars={this.state.ratings[i]} disabled={true} size={24} />
             </div>
           ))}
         </div>
-        <form onMouseLeave={this.loadHighestRatedServiceProviders}>
-          <Dropdown onChange={this.changeSelectedService} onClick={this.loadHighestRatedServiceProviders} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
-          </Dropdown>
-        </form>
-        <br/>
-        <div ref="map" style={{width: 1000, height: 500, margin: "auto"}}></div>
-        <br/>
-        <br/>
         <br/>
         <ServiceProviderListWithData style={{marginTop: "20px", left: 200}} fetchRemainingServiceUsers={this.fetchRemainingServiceUsers} users={this.state.foundServiceUsers} />
       </div>

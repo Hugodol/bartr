@@ -8,7 +8,8 @@ console.log('dev setup')
     storage: path.join(__dirname, 'bartr.sqlite3'),
     define: {
       underscored: true
-    }
+    },
+    logging: false
   });
 // } else {
 // var cls = require('continuation-local-storage');

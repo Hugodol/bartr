@@ -5,14 +5,14 @@ const VideoChat = props => {
 
   return(
     <div className="static-modal">
-      <Modal.Dialog>
+      <Modal.Dialog className="videoChatModal">
         <Modal.Header>
           <Modal.Title>Video Chat</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <video id="remoteVideo" autoPlay></video>
-          <video id="localVideo" autoPlay></video>
+          <video id="remoteVideo" autoPlay ></video>
+          <video id="localVideo" autoPlay muted ></video>
         </Modal.Body>
 
         <Modal.Footer>

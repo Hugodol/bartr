@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import _ from "lodash"
 import EngageReqList from "./EngageReqList";
 import Chat from "./Chat";
-import VideoChat from './VideoChat.js';
 import {Modal, FormGroup, InputGroup, FormControl, Glyphicon, Button} from 'react-bootstrap';
 
 class EngageReq extends React.Component {
@@ -16,15 +15,13 @@ class EngageReq extends React.Component {
       currentEngagement: [],
       messages: [],
       id : null,
-      videoModal: false
+      // videoModal: false
     }
       this.fetchMessages = this.fetchMessages.bind(this);
       this.fetchCurrentEngagement = this.fetchCurrentEngagement.bind(this);
       this.fetchEngagements = this.fetchEngagements.bind(this);
       this.fetchCurrentId = this.fetchCurrentId.bind(this);
       this.fetchChatMessages = this.fetchChatMessages.bind(this);
-      this.closeVideo = this.closeVideo.bind(this);
-      this.openVideo = this.openVideo.bind(this);
       this.showModal = this.showModal.bind(this);
       this.handleClose = this.handleClose.bind(this);
       clearInterval(window.updates);
@@ -77,13 +74,13 @@ class EngageReq extends React.Component {
     this.setState({messages:[chatMsg, ...this.state.messages]})
   }
 
-  closeVideo() {
-    this.setState({ videoModal: false });
-  }
+  // closeVideo() {
+  //   this.setState({ videoModal: false });
+  // }
 
-  openVideo() {
-    this.setState({ videoModal: true });
-  }
+  // openVideo() {
+  //   this.setState({ videoModal: true });
+  // }
 
   handleClose(e) {
     e.preventDefault();
@@ -109,7 +106,6 @@ class EngageReq extends React.Component {
         >Current Engagements </h2>
         <EngageReqList
           showModal={this.showModal}
-          openVideo={this.openVideo}
           msgs={this.state.messages}
           currentEngagement={this.state.currentEngagement}
           fetchEngagements={this.fetchEngagements}
@@ -124,9 +120,7 @@ class EngageReq extends React.Component {
           messages={this.state.messages}
           currentEngagement={this.state.currentEngagement}
         />
-        {this.state.videoModal ?
-          <VideoChat closeVideo={this.closeVideo}/>
-        : null}
+      
         <Modal
               {...this.props}
               show={this.state.show}

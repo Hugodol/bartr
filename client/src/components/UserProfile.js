@@ -35,7 +35,7 @@ class UserProfile extends React.Component {
     this.scanQR = this.scanQR.bind(this);
     this.handleScan = this.handleScan.bind(this);
     this.updateTicker = this.updateTicker.bind(this);
-
+    this.sendFinancialDataEmail = this.sendFinancialDataEmail.bind(this);
   }
 
   componentDidMount() {
@@ -43,8 +43,24 @@ class UserProfile extends React.Component {
     this.fetchUser();
     window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 5000);
   }
+  
   componentWillUnmount() {
     clearInterval(window.updates); 
+  }
+
+  sendFinancialDataEmail(){
+    axios.post(API_ENDPOINT + '/api/emails/send', {
+      btcAmount: this.state.balance,
+      dollarAmount: this.state.USD,
+      email: this.state.email,
+      name: this.state.name
+    })
+    .then((data) => {
+      console.log("Send the email to " + this.state.name + " at " + this.state.email + ". DATA IS: ", data);
+    })
+    .catch((error) => {
+      console.log("Couldn't Send the email to " + this.state.name + " at " + this.state.email + ". ERROR IS: ", error);
+    });
   }
 
   fetchScore() {
@@ -86,6 +102,7 @@ class UserProfile extends React.Component {
             this.setState({...this.state,
             name: res.data.name,
             address: res.data.address,
+            email: res.data.email,
             service: userService,
             lat: res.data.geo_lat,
             lng: res.data.geo_lng,
@@ -96,7 +113,7 @@ class UserProfile extends React.Component {
             USD: (balance.data / Math.pow(10, 8) * tickers.data.USD.last).toString().slice(0,4)
           })
           })
-          
+
         })
         this.loadMap();
       })
@@ -166,21 +183,22 @@ class UserProfile extends React.Component {
     axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config).then(data => {
       this.render();
     });
+    this.sendFinancialDataEmail();
   }
 
-  handleOpen(e) { 
+  handleOpen(e) {
     e.preventDefault();
     this.setState({show: true})
   }
 
-  handleClose(e) { 
+  handleClose(e) {
     e.preventDefault();
-    this.setState({show: false})  
+    this.setState({show: false})
   }
   handleAddressEntry(e) {
     e.preventDefault();
     this.setState({withdrawAddress: e.target.value});
-  } 
+  }
   scanQR(e) {
     e.preventDefault();
     this.setState({showScanner: true});
@@ -216,7 +234,7 @@ class UserProfile extends React.Component {
               {this.state.wallet ? (<QRCode size="256" value={this.state.wallet} />) : <div></div>}
               <p className="balance"><b>Balance:</b> {this.state.balance} BTC</p>
               <p className="balanceUSD"><b>USD:</b> ${this.state.USD}</p>
-            </div> 
+            </div>
             <div className="address">{this.state.address ? this.state.address : null}</div>
             <Link to='/editprofile'><button>Edit Profile</button></Link>
             <button onClick={this.handleOpen}>Withdraw Funds</button>
@@ -236,14 +254,14 @@ class UserProfile extends React.Component {
                   <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
                       <Glyphicon glyph="bitcoin" />
-                    </InputGroup.Addon> 
+                    </InputGroup.Addon>
                 </InputGroup>
                 <br />
                 {this.state.showScanner ? (<QrReader
                       onScan={this.handleScan}
-                      
+
                      maxImageSize={3000}
-                     />) : <div></div>} 
+                     />) : <div></div>}
               </FormGroup>
              </Modal.Body>
              <Modal.Footer>
