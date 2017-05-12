@@ -30,82 +30,73 @@ console.log('dev setup')
 }
 
 const Engagement = sql.define('engagement', {
-complete: {
-type: Sequelize.BOOLEAN,
-allowNull: false,
-      defaultValue: false
-}
+  complete: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  }
 });
 
 const Message = sql.define('message', {
-message: {
-type: Sequelize.TEXT,
-allowNull: false
-}
+  message: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  }
 });
 
 const Review = sql.define('review', {
-score: {
-type: Sequelize.INTEGER,
-allowNull: false
-},
-review: {
-type: Sequelize.TEXT,
-allowNull: false
-}
+  score: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  review: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  }
 });
 
 const User = sql.define('user', {
-email: {
-type: Sequelize.STRING,
-allowNull: true,
-unique: false,
-      validate: { isEmail: true }
-},
-name: {
-type: Sequelize.STRING,
-allowNull: true
-},
-address: {
-type: Sequelize.STRING,
-allowNull: true
-},
-geo_lat: {
-type: Sequelize.FLOAT(10,6),
-allowNull: true
-},
-geo_lng: {
-type: Sequelize.FLOAT(10,6),
-allowNull: true
-},
-auth0_id: {
-type: Sequelize.STRING,
-allowNull: false,
-      unique: true
-},
-public_key: {
-type: Sequelize.STRING,
-// allowNull: false,
-      unique: true
-},
-private_key: {
-type: Sequelize.STRING,
-// allowNull: false,
-      unique: true
-    },
-    public_key: {
-      type: Sequelize.STRING,
-      // allowNull: true
-    },
-    private_key: {
-      type: Sequelize.STRING,
-      // allowNull: false,
-      unique: true
-}
+  email: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    unique: false,
+    validate: { isEmail: true }
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  address: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  geo_lat: {
+    type: Sequelize.FLOAT(10,6),
+    allowNull: true
+  },
+  geo_lng: {
+    type: Sequelize.FLOAT(10,6),
+    allowNull: true
+  },
+  auth0_id: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  },
+  public_key: {
+    type: Sequelize.STRING,
+  // allowNull: false,
+    unique: true
+  },
+  private_key: {
+    type: Sequelize.STRING,
+  // allowNull: false,
+    unique: true
+  }
 }, {
-indexes: [
-{fields: ['geo_lng', 'geo_lat']}
-]
+  indexes: [
+    {fields: ['geo_lng', 'geo_lat']}
+  ]
 });
 
 const Service = sql.define('service', {
