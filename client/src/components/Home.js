@@ -92,7 +92,7 @@ class Home extends React.Component {
             <img width={200} height={75} alt="900x500" src="https://thumb.ibb.co/jamqo5/alex.png"/>
             <Carousel.Caption>
               <h3>Alex Aleksanyan</h3>
-              <p className="thick">Double Feature Master</p>
+              <p className="thick">Sequelista</p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
