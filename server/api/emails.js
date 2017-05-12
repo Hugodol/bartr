@@ -6,7 +6,7 @@ const findAuth0User = require('./util').findAuth0User;
 
 
 router.post('/send', function(req, res, next){
-  let transporter = nodemailer.createTranport({
+  let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
       user: process.env.NODEMAILER_USER,
