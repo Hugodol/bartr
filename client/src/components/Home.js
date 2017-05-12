@@ -24,7 +24,7 @@ class Home extends React.Component {
 
     <div>
             <AddressSearchWithData />
-      <Link to='/map'><Button className='homesearchbutton'>Search</Button></Link> 
+      <Link to='/map'><Button className='homesearchbutton'>Search</Button></Link>
       <br/>
       <br/>
 
@@ -74,6 +74,27 @@ class Home extends React.Component {
               <p className="thick">FrontEnd Monkey</p>
             </Carousel.Caption>
           </Carousel.Item>
+          <Carousel.Item >
+            <img width={200} height={75} alt="900x500" src="https://thumb.ibb.co/h4Zoak/david_Sims.png"/>
+            <Carousel.Caption>
+              <h3>David de Sousa</h3>
+              <p className="thick">BitCoins Guru</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item >
+            <img width={200} height={75} alt="900x500" src="https://thumb.ibb.co/dk4t85/hugo.png"/>
+            <Carousel.Caption>
+              <h3>Hugo Dolemieux</h3>
+              <p className="thick">Video Chat King</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item >
+            <img width={200} height={75} alt="900x500" src="https://thumb.ibb.co/jamqo5/alex.png"/>
+            <Carousel.Caption>
+              <h3>Alex Aleksanyan</h3>
+              <p className="thick">Double Feature Master</p>
+            </Carousel.Caption>
+          </Carousel.Item>
         </Carousel>
     </div>
     )
@@ -98,3 +119,4 @@ export default Home;
           strength={400}>
         </Parallax>
       </div>*/}
+
