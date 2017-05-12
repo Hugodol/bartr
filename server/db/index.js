@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const path = require('path');
 
-// if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
 console.log('dev setup')
   sql = new Sequelize('bartrDB', null, null, {
     dialect: 'sqlite',
@@ -11,23 +11,23 @@ console.log('dev setup')
     },
     logging: false
   });
-// } else {
-// var cls = require('continuation-local-storage');
-// var namespace = cls.createNamespace('my-namespace');
-// Sequelize.cls = namespace;
-//   sql= new Sequelize(process.env.HEROKU_POSTGRESQL_TEAL_URL, {
-//     "dialect":"postgres",
-//     "ssl":true,
-//     "define": {
-//       "underscored": true
-//     },
-//     "dialectOptions":{
-//       "ssl":{
-//         "require":true
-//       }
-//     }
-// });
-// }
+} else {
+  var cls = require('continuation-local-storage');
+  var namespace = cls.createNamespace('my-namespace');
+  Sequelize.cls = namespace;
+    sql= new Sequelize(process.env.DATABASE_URL, {
+      "dialect":"postgres",
+      "ssl":true,
+      "define": {
+        "underscored": true
+      },
+      "dialectOptions":{
+        "ssl":{
+          "require":true
+        }
+      }
+  });
+}
 
 const Engagement = sql.define('engagement', {
 complete: {

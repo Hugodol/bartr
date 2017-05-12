@@ -9,7 +9,6 @@ const EngageReqList = (props) => {
       {props.currentEngagement.map((currentEngagement, index) =>
         <EngageReqListEntries
           showModal={props.showModal}
-          openVideo={props.openVideo}
           msgs={props.msgs}
           currentEngagement={currentEngagement}
           key={index}
