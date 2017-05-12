@@ -96,6 +96,8 @@ router.get('/:services', (req, res, next) => {
                       for(let key in provider){
                         if(provider[key] === bestRated){
                           console.log("Person providing Service: ", provider);
+                          provider[key] = Math.floor(provider[key]);
+                          console.log(provider);
                           return provider;
                         }
                       }
@@ -111,9 +113,13 @@ router.get('/:services', (req, res, next) => {
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = [].concat.apply([], data);
             data = data.filter((el, i, arr) => arr.indexOf(el) === i);
-            data = data.length > 2 ? data.slice(0, 2) : data;
-            console.log("Getting the Users with their avg rating scores", data);
-            res.status(200).send(data);
+            let a = data[Math.floor((Math.random() * data.length - 1) + 1)];
+            let b = data[Math.floor((Math.random() * data.length - 1) + 1)];
+            while(b === a){
+              b = data[Math.floor((Math.random() * data.length - 1) + 1)];
+            }
+            console.log("Getting the Users with their avg rating scores", [a, b]);
+            res.status(200).send([a, b]);
           }
         })
         .catch((error) => {

@@ -386,3 +386,10 @@ h2.title {
   height: auto;
   border: solid;
 }
+
+
+.rating-gly-star > input{
+  display: none;
+  visibility: hidden;
+
+}

@@ -72,5 +72,14 @@
       "score" : 1,
       "review" : "Gave me a bad haircut, wish I didn't do this barter, bad deal for me"
     }
+  },
+  {
+    "model": "Engagement",
+    "data": {
+      "id": 5,
+      "sender_id": 4,
+      "receiver_id": 5,
+      "complete": "true"
+    }
   }
 ]
