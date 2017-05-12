@@ -19,7 +19,8 @@ class EngageReqListEntries extends Component {
       remotePeerId: null,
       peer: null,
       calling: false,
-      videoModal: false
+      videoModal: false,
+      socket: null
     }
     this.setCurrMessages();
     this.closeVideo = this.closeVideo.bind(this);
@@ -32,7 +33,12 @@ class EngageReqListEntries extends Component {
   }
 
   componentWillUnmount() {
-    // this.state.peer.destroy();
+    this.state.socket.emit('leave',
+      {name: this.state.currentEngagement.id}
+    );
+    // this.state.remotePeerId = null;
+    // this.state.peer = null;
+    // this.state.socket = null;
     console.log('List entry unmounted');
   }
 
@@ -73,9 +79,10 @@ class EngageReqListEntries extends Component {
   }
 
   videoCall() {
-    if (!this.state.peer) {
-      this.sendPeerId();
-    }
+    console.log('peer', this.state.peer);
+    // if (!this.state.peer) {
+    //   this.sendPeerId();
+    // }
     navigator.mediaDevices.getUserMedia(this.state.constraints)
       .then(stream => {
         let localVideo = document.getElementById('localVideo');
@@ -95,6 +102,7 @@ class EngageReqListEntries extends Component {
     const peer = new Peer({key: PEERS_API_KEY});
 
     this.setState({peer: peer});
+    this.setState({socket: socket});
 
     let peerId;
     peer.on('open', id => {
@@ -104,6 +112,9 @@ class EngageReqListEntries extends Component {
       socket.emit('sendId', {
         name: this.state.currentEngagement.id,
         peerId: peerId
+      });
+      socket.on('userLeft', () => {
+        this.setState({remotePeerId: null});
       });
       socket.on('fetchPeerId', data => {
         if (data !== peerId) {

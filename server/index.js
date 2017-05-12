@@ -12,13 +12,17 @@ const server = http.createServer(app);
 const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
-  console.log('USER CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   socket.on('join', data => {
     socket.join(data.name);
   });
   socket.on('sendId', data => {
     io.sockets.in(data.name).emit('fetchPeerId', data.peerId);
   });
+  socket.on('leave', data => {
+    console.log('LEAVE EVENT FIRED');
+    socket.leave(data.name);
+    io.sockets.in(data.name).emit('userLeft');
+  })
 });
 
 // if (process.env.NODE_ENV === 'development') {
