@@ -34,12 +34,14 @@ class UserProfile extends React.Component {
     this.handleAddressEntry = this.handleAddressEntry.bind(this);
     this.scanQR = this.scanQR.bind(this);
     this.handleScan = this.handleScan.bind(this);
+    this.updateTicker = this.updateTicker.bind(this);
 
   }
 
   componentDidMount() {
     this.getServices();
     this.fetchUser();
+    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 3000);
   }
 
   fetchScore() {
@@ -78,7 +80,6 @@ class UserProfile extends React.Component {
         axios.get("https://blockchain.info/q/addressbalance/" + res.data.public_key +  "?confirmations=0&cors=true").then(balance => {
           console.log("BALANCE IS ", balance);
           axios.get("https://blockchain.info/ticker").then(tickers => {
-        
             this.setState({...this.state,
             name: res.data.name,
             address: res.data.address,
@@ -88,6 +89,7 @@ class UserProfile extends React.Component {
             wallet: res.data.public_key,
             p: res.data.private_key,
             balance: balance.data / Math.pow(10, 8),
+            rawBalance: balance.data,
             USD: (balance.data / Math.pow(10, 8) * tickers.data.USD.last).toString().slice(0,4)
           })
           })
@@ -102,6 +104,24 @@ class UserProfile extends React.Component {
       .catch(err => {
         console.log('Error in fetchUsers in UserProfile: ', err);
       })
+  }
+
+  updateTicker() {
+    console.log("INSIDE UPDATE TICKER");
+    axios.get("https://blockchain.info/ticker").then(tickers => {
+      if ((tickers.data.USD.last * this.state.balance).toString().slice(0,4) !== this.state.USD) {
+        this.setState({USD: (tickers.data.USD.last * this.state.balance).toString().slice(0,4)});
+      }
+    })
+  }
+
+  updateBalance() {
+    console.log("INSIDE UPDATE BALANCE");
+    axios.get("https://blockchain.info/q/addressbalance/" + this.state.wallet +  "?confirmations=0&cors=true").then(balance => {
+          if (this.state.rawBalance !== balance.data) {
+            this.setState({balance: balance.data / Math.pow(10, 8)});
+          }
+        });
   }
 
   loadMap() {
@@ -140,12 +160,13 @@ class UserProfile extends React.Component {
   handleWithdraw(e) {
     e.preventDefault();
     console.log("In handleWithdraw address is", this.state.withdrawAddress);
-    // let auth = JSON.parse(localStorage.profile).user_id;
     const config = {
       headers: {'Authorization': 'Bearer ' + localStorage.getItem('id_token'),
                 'Content-Type': 'application/json' }
     };
-    axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config);
+    axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config).then(data => {
+      this.render();
+    });
   }
 
   handleOpen(e) { 
@@ -168,13 +189,18 @@ class UserProfile extends React.Component {
   handleScan(result) {
     console.log("INSIDE HANDLE SCAN RESULT IS", result);
     if (result) {
-      this.setState({showScanner: false, qrValue: result.slice(8), withdrawAddress: result.slice(8)})
+      var qIndex = result.indexOf("?");
+      if(qIndex > -1) {
+        result = result.slice(8, qIndex);
+      } else {
+         result = result.slice(8);
+      }
+      this.setState({showScanner: false, qrValue: result, withdrawAddress: result})
       console.log(this.state);
     }
   }
 
   render() {
-    console.log(this.state)
     return(
       <div className='body'>
         <div className="profile-page-content">
@@ -209,13 +235,14 @@ class UserProfile extends React.Component {
                 <InputGroup onChange={this.handleAddressEntry}>
                   <FormControl type="text" placeholder={this.state.qrValue}/>
                     <InputGroup.Addon>
-                      <Glyphicon glyph="qrcode" />
+                      <Glyphicon glyph="bitcoin" />
                     </InputGroup.Addon> 
                 </InputGroup>
+                <br />
                 {this.state.showScanner ? (<QrReader
                       onScan={this.handleScan}
-                      style={{height: 480,
-                     width: 320}}
+                      
+                     maxImageSize={3000}
                      />) : <div></div>} 
               </FormGroup>
              </Modal.Body>

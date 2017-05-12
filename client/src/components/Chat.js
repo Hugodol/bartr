@@ -20,6 +20,13 @@ class Chat extends React.Component {
     this.handleMessage = this.handleMessage.bind(this);
     this.updateChatHistory = this.updateChatHistory.bind(this);
     this.handleIdAndMessage = this.handleIdAndMessage.bind(this);
+
+  }
+
+  componentDidMount() {
+    // if (this.props.request) {
+      
+    // }
   }
 
   changeId(){
@@ -66,7 +73,7 @@ class Chat extends React.Component {
   render() {
       return (
         <div className="chatbox">
-          <ChatList messages={this.props.messages}/>
+          <ChatList request={this.props.request} messages={this.props.messages} currentEngagement={this.props.currentEngagement} />
           <Form onSubmit={this.updateChatHistory} >
             <Form.Field onClick={this.changeId} onChange={this.handleIdAndMessage}  control={TextArea} label='Chat!' placeholder='Send em a message'  />
             <Form.Field control={Button}>Submit</Form.Field>
