@@ -159,6 +159,8 @@ class EngageReqListEntries extends Component {
             }
           ><Glyphicon glyph="facetime-video" /></Button>
         ) : <Button className="videoChatButtonOff" disabled><Glyphicon glyph="facetime-video" /></Button>}
+
+        <Button onClick={this.props.showModal}>Request Payment</Button>
       <br/>
       {this.state.videoModal ?
           <VideoChat closeVideo={this.closeVideo}/>

@@ -4,6 +4,7 @@ import './styles/styles.css';
 
 
 const ChatListEntry = (props) => {
+  console.log("INSIDE CHAT LIST ENTRY PROPS ARE ", props);
   let style = {marginLeft: 0};
   if(props.index % 2 !== 0){
     style ={marginLeft: "500%"}
