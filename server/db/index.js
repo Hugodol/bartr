@@ -12,9 +12,9 @@ console.log('dev setup')
     logging: false
   });
 } else {
-  var cls = require('continuation-local-storage');
-  var namespace = cls.createNamespace('my-namespace');
-  Sequelize.cls = namespace;
+  // var cls = require('continuation-local-storage');
+  // var namespace = cls.createNamespace('my-namespace');
+  // Sequelize.cls = namespace;
     sql= new Sequelize(process.env.DATABASE_URL, {
       "dialect":"postgres",
       "ssl":true,
