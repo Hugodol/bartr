@@ -183,7 +183,7 @@ class UserProfile extends React.Component {
     axios.post(API_ENDPOINT + '/api/transactions/create', {"public_key": this.state.wallet, "fromWIF": this.state.p, "toAddress": this.state.withdrawAddress}, config).then(data => {
       this.render();
     });
-    this.state.sendFinancialDataEmail();
+    this.sendFinancialDataEmail();
   }
 
   handleOpen(e) {
