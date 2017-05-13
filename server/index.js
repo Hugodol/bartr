@@ -13,7 +13,6 @@ const server = http.createServer(app);
 const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
-  console.log('USER CONNECTED');
   socket.on('join', data => {
     socket.join(data.name);
   });
@@ -23,7 +22,6 @@ io.on('connection', socket => {
   });
 
   socket.on('leave', data => {
-    console.log('USER DISCONNECTED');
     socket.leave(data.name);
     io.sockets.in(data.name).emit('userLeft');
   })

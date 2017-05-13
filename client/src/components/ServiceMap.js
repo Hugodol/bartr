@@ -17,7 +17,7 @@ class ServiceMap extends Component {
     super(props)
 
     this.state = {
-      selectedServiceType: null,
+      selectedServiceType: 1,
       foundServiceUsers: [],
       serviceTypes: [],
       highestRated: []

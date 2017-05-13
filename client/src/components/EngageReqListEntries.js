@@ -28,12 +28,10 @@ class EngageReqListEntries extends Component {
   }
 
   componentDidMount() {
-    console.log('IN COMPONENT DID MOUNT');
     this.sendPeerId();
   }
 
   componentWillUnmount() {
-    console.log("IN COMPONENT WILL UNMOUNT");
     this.state.socket.emit('leave',
       {name: this.state.currentEngagement.id}
     );
@@ -100,15 +98,12 @@ class EngageReqListEntries extends Component {
     const socket = io();
     const peer = new Peer({key: PEERS_API_KEY});
 
-    console.log('IN SEED PEER ID', peer);
-
     this.setState({peer: peer});
     this.setState({socket: socket});
 
     let peerId;
     peer.on('open', id => {
       peerId = id;
-      console.log('your peer id is', peerId);
       socket.emit('join', {name: this.state.currentEngagement.id});
       socket.emit('sendId', {
         name: this.state.currentEngagement.id,
