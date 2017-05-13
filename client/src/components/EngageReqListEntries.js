@@ -28,10 +28,12 @@ class EngageReqListEntries extends Component {
   }
 
   componentDidMount() {
+    console.log('IN COMPONENT DID MOUNT');
     this.sendPeerId();
   }
 
   componentWillUnmount() {
+    console.log("IN COMPONENT WILL UNMOUNT");
     this.state.socket.emit('leave',
       {name: this.state.currentEngagement.id}
     );
