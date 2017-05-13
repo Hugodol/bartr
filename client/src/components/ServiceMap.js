@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import StarRating from 'react-star-rating';
 import Autocomplete from 'react-google-autocomplete'
 import { geocodeByAddress } from 'react-places-autocomplete'
 import { Dropdown, Input, Header, Image, Grid } from 'semantic-ui-react';
