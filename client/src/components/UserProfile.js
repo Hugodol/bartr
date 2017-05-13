@@ -103,10 +103,7 @@ class UserProfile extends React.Component {
           }
         })
         axios.get("https://blockchain.info/q/addressbalance/" + res.data.public_key +  "?confirmations=0&cors=true").then(balance => {
-          // console.log("BALANCE IS ", balance);
           axios.get("http://api.coindesk.com/v1/bpi/currentprice/usd.json").then(tickers => {
-            console.log('TICKER', Number(tickers.data.bpi.USD.rate.split(",").join("")));
-            // console.log('TICKER', typeof tickers.data.bpi.USD.rate);
             this.setState({...this.state,
               name: res.data.name,
               address: res.data.address,
