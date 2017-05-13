@@ -63,7 +63,7 @@ module.exports = {
   //   hot: true,
   //   inline: true
   // },
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   cache: true,
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

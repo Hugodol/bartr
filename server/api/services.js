@@ -109,10 +109,12 @@ router.get('/:services', (req, res, next) => {
         })
         .then((data) => {
           //an array of promises
+          console.log("BEFORE FORMATTING: ", data);
           if(data.length > 0){
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = [].concat.apply([], data);
             data = data.filter((el, i, arr) => arr.indexOf(el) === i);
+            console.log("DATA AFTER FORMATTING: ", data);
             let a = data[Math.floor((Math.random() * data.length - 1) + 1)];
             let b = data[Math.floor((Math.random() * data.length - 1) + 1)];
             while(b === a){

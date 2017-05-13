@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../actions/Auth0Actions'
 import * as authSelectors from '../auth/Auth0Selectors'
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router';
 
 const ServiceProviderList = (props) => {
 
@@ -74,9 +73,6 @@ const ServiceProviderList = (props) => {
               </Card.Content>
               <Button value={user} onClick={(event, user) => {requestService(event, user.value)}}>
                 Request Service
-              </Button>
-              <Button eventKey={3.1} onClick={() => hashHistory.push('profile')} >
-                Go to Profile
               </Button>
             </Card>
           </Grid.Column>

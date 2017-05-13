@@ -2,12 +2,9 @@
 
 const router = require('express').Router();
 const easyBtc = require('easy-bitcoin-js');
-const request = require('request');
 const axios = require('axios');
 var bitcoin = require("bitcoinjs-lib");
 var bigi    = require("bigi");
-var buffer  = require('buffer');
-const CircularJSON = require('circular-json');
 var cs = require('coinstring');
 var buffer  = require('buffer');
 
@@ -46,7 +43,7 @@ router.post('/create', (req, res) => {
     });
   }
     res.status(200);
-    res.send();  
+    res.send();
 });
 
 router.get('/transactions', (req, res) => {
