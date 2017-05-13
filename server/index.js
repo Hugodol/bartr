@@ -11,6 +11,11 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
 
+io.configure(function () {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
+});
+
 io.on('connection', socket => {
   socket.on('join', data => {
     socket.join(data.name);
