@@ -249,6 +249,8 @@ class UserProfile extends React.Component {
             </Modal.Header>
             <Modal.Body>
               <p>Enter the bitcoin address you would like to withdraw funds to:</p>
+              <p>Your balance must be at least $3 USD to withdraw.</p>
+
               <FormGroup>
                 <InputGroup onChange={this.handleAddressEntry}>
                   <FormControl type="text" placeholder={this.state.qrValue}/>
