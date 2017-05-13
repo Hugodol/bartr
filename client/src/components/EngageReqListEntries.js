@@ -98,7 +98,7 @@ class EngageReqListEntries extends Component {
   sendPeerId() {
     // const socket = io('http://localhost:5000');
     const socket = io('https://powerful-island-56927.herokuapp.com');
-    const peer = new Peer({key: PEERS_API_KEY, secure: true, port:443, key: 'peerjs'});
+    const peer = new Peer({key: ghwfzjto973krzfr, secure: true});
 
     console.log('IN SEED PEER ID', peer);
 

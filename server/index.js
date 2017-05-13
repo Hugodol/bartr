@@ -4,14 +4,14 @@ const http = require('http');
 const expressSession = require('express-session');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const ExpressPeerServer = require('peer').ExpressPeerServer;
+// const ExpressPeerServer = require('peer').ExpressPeerServer;
 
 const app = express();
 
 // Socket io connection
 const server = http.createServer(app);
 
-app.use('/peerjs', ExpressPeerServer(server));
+// app.use('/peerjs', ExpressPeerServer(server));
 
 const io = require('socket.io')({
   transports: ["xhr-polling"]
