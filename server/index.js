@@ -4,20 +4,13 @@ const http = require('http');
 const expressSession = require('express-session');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-// const ExpressPeerServer = require('peer').ExpressPeerServer;
 
 const app = express();
 
 // Socket io connection
 const server = http.createServer(app);
 
-// app.use('/peerjs', ExpressPeerServer(server));
-
 const io = require('socket.io').listen(server);
-// ({
-//   transports: ["xhr-polling"]
-// })
-
 
 io.on('connection', socket => {
   console.log('USER CONNECTED');
@@ -44,17 +37,6 @@ io.on('connection', socket => {
     next();
   });
 // }
-
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Authorization, Content-Type");
-//   res.header("Access-Control-Allow-Methods", 'GET, POST, PUT ,DELETE');
-//   if ('OPTIONS' == req.method) {
-//     res.send(200);
-//   } else {
-//     next();
-//   }
-// });
 
 app.use(morgan());
 // app.use(expressSession({secret: 'bigboost'}));

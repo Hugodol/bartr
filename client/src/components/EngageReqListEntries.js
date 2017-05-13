@@ -14,7 +14,7 @@ class EngageReqListEntries extends Component {
       currentEngagement: this.props.currentEngagement,
       constraints: {
         video: true,
-        audio: false
+        audio: true
       },
       remotePeerId: null,
       peer: null,
