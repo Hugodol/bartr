@@ -4,6 +4,7 @@ const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const findAuth0User = require('./util').findAuth0User;
 
+//email stuff
 
 router.post('/send', function(req, res, next){
   let transporter = nodemailer.createTransport({
