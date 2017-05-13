@@ -21,6 +21,7 @@ if (DEPLOYMENT_ENV === 'development') {
   if (module.hot) {
     module.hot.accept('./bartr', () => {
       const NextApp = require('./bartr').default;
+
       ReactDOM.render(
         <AppContainer>
           <Routing/>

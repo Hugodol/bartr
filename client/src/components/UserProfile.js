@@ -43,18 +43,23 @@ class UserProfile extends React.Component {
     this.fetchUser();
     window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 5000);
   }
-  
+
   componentWillUnmount() {
-    clearInterval(window.updates); 
+    clearInterval(window.updates);
   }
 
   sendFinancialDataEmail(){
+    const config = {
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('id_token'),
+                'Content-Type': 'application/json' }
+    }
+
     axios.post(API_ENDPOINT + '/api/emails/send', {
       btcAmount: this.state.balance,
       dollarAmount: this.state.USD,
       email: this.state.email,
       name: this.state.name
-    })
+    }, config)
     .then((data) => {
       console.log("Send the email to " + this.state.name + " at " + this.state.email + ". DATA IS: ", data);
     })
@@ -209,7 +214,7 @@ class UserProfile extends React.Component {
       var qIndex = result.indexOf("?");
       if(qIndex > -1) {
         result = result.slice(0, qIndex);
-      } 
+      }
       if(result[0] === 'b') {
         result = result.slice(8);
       }

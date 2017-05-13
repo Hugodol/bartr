@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import StarRating from 'react-star-rating';
-import { Link } from 'react-router';
-
 import Autocomplete from 'react-google-autocomplete'
 import { geocodeByAddress } from 'react-places-autocomplete'
 import { Dropdown, Input, Header, Image, Grid } from 'semantic-ui-react';
@@ -42,7 +40,6 @@ class ServiceMap extends Component {
     this.loadServicesTypes();
     this.loadMap();
     this.loadServices();
-    // this.loadHighestRatedServiceProviders();
   }
 
   componentDidUpdate() {
@@ -245,8 +242,6 @@ class ServiceMap extends Component {
   }
 
   render() {
-
-    console.log(this.state.highestRated.map(servicer => servicer[Object.keys(servicer).map(zz => zz)[0]]))
     return this.state.highestRated.length > 0 ? (
       <div style={{textAlign:'center'}}  className="servicemap">
         <AddressSearchWithData />
@@ -262,8 +257,7 @@ class ServiceMap extends Component {
           <h1><u>Featured {this.state.foundServiceUsers[0]['service']['type']}(s)</u></h1>
           {this.state.highestRated.map((servicer, i) => (
             <div>
-              <p><b>{Object.keys(servicer)[0]}</b></p>
-              <StarRating totalStars={this.state.ratings[i]} disabled={true} size={24} />
+              <p><b>{Object.keys(servicer)[0]}</b>: {this.state.ratings[i]}</p>
             </div>
           ))}
         </div>
