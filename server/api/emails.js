@@ -23,6 +23,8 @@ router.post('/send', function(req, res, next){
     html: "<h1>Hello " + req.body.name + ", thanks for bartering with us! We value our users and pride ourselves on keeping your actions up to date with our 24/7 platform support specialists.</h1><br/><p>There has been a recent transaction on your account and a withdrawal of <b>" + req.body.btcAmount + " BTC has been processed.</b></p><br/><p style='color: red'>If there are any concerns of suspicous activity call the police... It's none of our concern :P</p>"
   };
 
+  //random comment
+
   transporter.sendMail(mailOptions, function(error, info){
     if(error){
       console.log("COULDN'T SEND MESSAGE: ", error);

@@ -113,20 +113,28 @@ router.get('/:services', (req, res, next) => {
         .then((data) => {
           console.log('data in services api BEFORE FORMATTING: ', data)
           //an array of promises
-          if(data.length > 0){
+          if(data.length > 0 && !data.filter(item => item !== undefined).includes(undefined)){
             data = data.filter(item => item !== undefined);
             console.log("DATA AFTER FITLERING UNDEFINED's: ", data);
+            if(data === []){
+              res.status(200).send([{'Hugo Dolemiuex': 5}, {'Alex1100': 2}]);
+            }
             data = data.includes(undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = [].concat.apply([], data);
             data = data.filter((el, i, arr) => arr.indexOf(el) === i);
             let a = data[Math.floor((Math.random() * data.length - 1) + 1)];
             let b = data[Math.floor((Math.random() * data.length - 1) + 1)];
-            while(b === a){
+            if(b === a){
               b = data[Math.floor((Math.random() * data.length - 1) + 1)];
             }
             console.log("Getting the Users with their avg rating scores", [a, b]);
+            if(a === undefined || b === undefined){
+              res.status(200).send([{'Hugo Dolemiuex': 5}, {'Alex1100': 2}])
+            }
             res.status(200).send([a, b]);
+          } else {
+            res.status(200).send([{'Hugo Dolemiuex': 5}, {'Alex1100': 2}])
           }
         })
         .catch((error) => {
