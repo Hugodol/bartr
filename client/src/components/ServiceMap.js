@@ -257,7 +257,7 @@ class ServiceMap extends Component {
           <h1><u>Featured {this.state.foundServiceUsers[0]['service']['type']}(s)</u></h1>
           {this.state.highestRated.map((servicer, i) => (
             <div>
-              <p><b>{Object.keys(servicer)[0]}</b>: {this.state.ratings[i]}</p>
+              <p><b>{Object.keys(servicer)[0]}</b>: {this.state.highestRated.map(servicer => Object.keys(servicer).map(zz => servicer[zz]))[i]}</p>
             </div>
           ))}
         </div>
@@ -269,7 +269,7 @@ class ServiceMap extends Component {
         <AddressSearchWithData />
         <br/>
         <form onMouseLeave={this.loadHighestRatedServiceProviders}>
-          <Dropdown onChange={this.changeSelectedService} 
+          <Dropdown onChange={this.changeSelectedService}
           placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
@@ -280,7 +280,6 @@ class ServiceMap extends Component {
         <br/>
         <ServiceProviderListWithData style={{marginTop: "20px", left: 200}} fetchRemainingServiceUsers={this.fetchRemainingServiceUsers} users={this.state.foundServiceUsers} />
       </div>
-    )
     )
   }
 }
