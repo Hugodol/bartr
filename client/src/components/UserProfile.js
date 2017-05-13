@@ -95,7 +95,7 @@ class UserProfile extends React.Component {
     }
     axios.get(API_ENDPOINT + `/api/users/${auth}`, config)
       .then((res) => {
-        console.log('RES IN FETCH USER', res.data);
+        // console.log('RES IN FETCH USER', res.data);
         let userService = null;
         _.each(this.state.listOfServices, (service) => {
           if (service.value === res.data.service_id) {
@@ -103,21 +103,23 @@ class UserProfile extends React.Component {
           }
         })
         axios.get("https://blockchain.info/q/addressbalance/" + res.data.public_key +  "?confirmations=0&cors=true").then(balance => {
-          console.log("BALANCE IS ", balance);
+          // console.log("BALANCE IS ", balance);
           axios.get("http://api.coindesk.com/v1/bpi/currentprice/usd.json").then(tickers => {
+            console.log('TICKER', Number(tickers.data.bpi.USD.rate.split(",").join("")));
+            // console.log('TICKER', typeof tickers.data.bpi.USD.rate);
             this.setState({...this.state,
-            name: res.data.name,
-            address: res.data.address,
-            email: res.data.email,
-            service: userService,
-            lat: res.data.geo_lat,
-            lng: res.data.geo_lng,
-            wallet: res.data.public_key,
-            p: res.data.private_key,
-            balance: balance.data / Math.pow(10, 8),
-            rawBalance: balance.data,
-            USD: (balance.data / Math.pow(10, 8) * Number(tickers.data.bpi.USD.rate)).toString().slice(0,4)
-          })
+              name: res.data.name,
+              address: res.data.address,
+              email: res.data.email,
+              service: userService,
+              lat: res.data.geo_lat,
+              lng: res.data.geo_lng,
+              wallet: res.data.public_key,
+              p: res.data.private_key,
+              balance: balance.data / Math.pow(10, 8),
+              rawBalance: balance.data,
+              USD: (balance.data / Math.pow(10, 8) * Number(tickers.data.bpi.USD.rate.split(",").join(""))).toString().slice(0,4)
+            })
           })
 
         })
@@ -131,8 +133,8 @@ class UserProfile extends React.Component {
   updateTicker() {
     console.log("INSIDE UPDATE TICKER");
     axios.get("http://api.coindesk.com/v1/bpi/currentprice/usd.json").then(tickers => {
-      if ((Number(tickers.data.bpi.USD.rate) * this.state.balance).toString().slice(0,4) !== this.state.USD) {
-        this.setState({USD: (Number(tickers.data.bpi.USD.rate) * this.state.balance).toString().slice(0,4)});
+      if ((Number(tickers.data.bpi.USD.rate.split(",").join("")) * this.state.balance).toString().slice(0,4) !== this.state.USD) {
+        this.setState({USD: (Number(tickers.data.bpi.USD.rate.split(",").join("")) * this.state.balance).toString().slice(0,4)});
       }
     })
   }
