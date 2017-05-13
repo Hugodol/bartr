@@ -4,9 +4,10 @@ const http = require('http');
 const expressSession = require('express-session');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
-
+app.use(cors());
 // Socket io connection
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);

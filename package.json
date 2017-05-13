@@ -52,6 +52,7 @@
     "circular-json": "^0.3.1",
     "coinstring": "^2.3.0",
     "continuation-local-storage": "^3.2.0",
+    "cors": "^2.8.3",
     "cryptr": "^2.0.0",
     "css-loader": "^0.28.0",
     "dotenv": "^4.0.0",
