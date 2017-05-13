@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, ButtonControl, Well, Glyphicon } from 'react-bootstrap';
 import axios from 'axios';
 import swal from 'sweetalert';
-import Peer from 'peerjs';
+// import Peer from 'peerjs';
 import io from 'socket.io-client';
 import VideoChat from './VideoChat.js';
 
