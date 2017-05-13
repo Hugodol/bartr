@@ -113,8 +113,6 @@ router.get('/:services', (req, res, next) => {
         .then((data) => {
           console.log('data in services api BEFORE FORMATTING: ', data)
           //an array of promises
-
-
           if(data.length > 0){
             data = data.filter(item => item !== undefined);
             console.log("DATA AFTER FITLERING UNDEFINED's: ", data);
@@ -122,7 +120,6 @@ router.get('/:services', (req, res, next) => {
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = [].concat.apply([], data);
             data = data.filter((el, i, arr) => arr.indexOf(el) === i);
-            console.log("DIFFERENCE AFTER FORMATTING: ", data);
             let a = data[Math.floor((Math.random() * data.length - 1) + 1)];
             let b = data[Math.floor((Math.random() * data.length - 1) + 1)];
             while(b === a){

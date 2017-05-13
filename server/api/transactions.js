@@ -43,7 +43,7 @@ router.post('/create', (req, res) => {
     });
   }
     res.status(200);
-    res.send();  
+    res.send();
 });
 
 router.get('/transactions', (req, res) => {
