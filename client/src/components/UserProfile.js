@@ -116,7 +116,7 @@ class UserProfile extends React.Component {
             p: res.data.private_key,
             balance: balance.data / Math.pow(10, 8),
             rawBalance: balance.data,
-            USD: (balance.data / Math.pow(10, 8) * tickers.data.bpi.USD.rate).toString().slice(0,4)
+            USD: (balance.data / Math.pow(10, 8) * Number(tickers.data.bpi.USD.rate)).toString().slice(0,4)
           })
           })
 
@@ -131,8 +131,8 @@ class UserProfile extends React.Component {
   updateTicker() {
     console.log("INSIDE UPDATE TICKER");
     axios.get("http://api.coindesk.com/v1/bpi/currentprice/usd.json").then(tickers => {
-      if ((tickers.data.bpi.USD.rate * this.state.balance).toString().slice(0,4) !== this.state.USD) {
-        this.setState({USD: (tickers.data.bpi.USD.rate * this.state.balance).toString().slice(0,4)});
+      if ((Number(tickers.data.bpi.USD.rate) * this.state.balance).toString().slice(0,4) !== this.state.USD) {
+        this.setState({USD: (Number(tickers.data.bpi.USD.rate) * this.state.balance).toString().slice(0,4)});
       }
     })
   }
