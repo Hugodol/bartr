@@ -14,7 +14,7 @@ class EngageReqListEntries extends Component {
       currentEngagement: this.props.currentEngagement,
       constraints: {
         video: true,
-        audio: false
+        audio: true
       },
       remotePeerId: null,
       peer: null,
@@ -94,8 +94,8 @@ class EngageReqListEntries extends Component {
   }
 
   sendPeerId() {
-    const socket = io('http://localhost:5000');
-    // const socket = io();
+    // const socket = io('http://localhost:5000');
+    const socket = io();
     const peer = new Peer({key: PEERS_API_KEY});
 
     this.setState({peer: peer});
@@ -104,7 +104,6 @@ class EngageReqListEntries extends Component {
     let peerId;
     peer.on('open', id => {
       peerId = id;
-      console.log('your peer id is', peerId);
       socket.emit('join', {name: this.state.currentEngagement.id});
       socket.emit('sendId', {
         name: this.state.currentEngagement.id,
