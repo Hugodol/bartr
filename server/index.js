@@ -10,8 +10,7 @@ const app = express();
 // Socket io connection
 const server = http.createServer(app);
 const io = require('socket.io')({
-  io.set("transports", ["xhr-polling"]);
-  io.set("polling duration", 10);
+  transports: ["xhr-polling"]
 })
 
 io.listen(server);
