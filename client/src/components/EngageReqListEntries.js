@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, ButtonControl, Well, Glyphicon } from 'react-bootstrap';
 import axios from 'axios';
 import swal from 'sweetalert';
-// import Peer from 'peerjs';
+import Peer from 'peerjs';
 import io from 'socket.io-client';
 import VideoChat from './VideoChat.js';
 
@@ -98,10 +98,9 @@ class EngageReqListEntries extends Component {
   sendPeerId() {
     // const socket = io('http://localhost:5000');
     const socket = io('https://powerful-island-56927.herokuapp.com');
-    // const peer = new Peer({key: PEERS_API_KEY, secure: true});
-    const peer = new Peer({host:'powerful-island-56927.herokuapp.com', secure:true, port:443, key: 'peerjs'});
+    const peer = new Peer({key: PEERS_API_KEY, secure: true});
 
-    console.log('IN SEBD PEER ID', peer);
+    console.log('IN SEED PEER ID', peer);
 
     this.setState({peer: peer});
     this.setState({socket: socket});
