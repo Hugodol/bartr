@@ -94,8 +94,8 @@ class EngageReqListEntries extends Component {
   }
 
   sendPeerId() {
-    // const socket = io('http://localhost:5000');
-    const socket = io();
+    const socket = io('http://localhost:5000');
+    // const socket = io();
     const peer = new Peer({key: PEERS_API_KEY});
 
     this.setState({peer: peer});
@@ -129,7 +129,7 @@ class EngageReqListEntries extends Component {
     peer.on('call', call => {
       let context = this;
       swal({
-        title: `${this.state.currentEngagement.receiver.name} is calling you!`,
+        title: `Getting a call for service request between ${this.state.currentEngagement.receiver.name} and ${this.state.currentEngagement.sender.name}.`,
         text: "Accept call?",
         showCancelButton: true,
         confirmButtonColor: "#337AB7",
@@ -158,6 +158,7 @@ class EngageReqListEntries extends Component {
     this.setState({ videoModal: false });
     this.state.peer.destroy();
     this.state.stream.getTracks()[0].stop();
+    this.state.stream.getTracks()[1].stop();
   }
 
   openVideo() {
