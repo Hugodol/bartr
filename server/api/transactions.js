@@ -7,9 +7,7 @@ const axios = require('axios');
 var bitcoin = require("bitcoinjs-lib");
 var bigi    = require("bigi");
 var buffer  = require('buffer');
-const CircularJSON = require('circular-json');
 var cs = require('coinstring');
-var buffer  = require('buffer');
 
 
 router.post('/create', (req, res) => {
@@ -21,7 +19,7 @@ router.post('/create', (req, res) => {
       console.log("PUBLIC KEY IS", req.body.public_key);
       var newtx = {
         inputs: [{addresses: [req.body.public_key]}],
-        outputs: [{addresses: [req.body.toAddress], value: walletInfo.final_balance - 75200}]
+        outputs: [{addresses: [req.body.toAddress], value: Math.floor(walletInfo.final_balance - 75000) }]
       };
 
       console.log("NEW TX STRINGIFIED", JSON.stringify(newtx));
