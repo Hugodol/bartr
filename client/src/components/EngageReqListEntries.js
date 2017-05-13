@@ -100,6 +100,8 @@ class EngageReqListEntries extends Component {
     const socket = io('https://powerful-island-56927.herokuapp.com');
     const peer = new Peer({key: PEERS_API_KEY, secure: true});
 
+    console.log('IN SEBD PEER ID', peer);
+
     this.setState({peer: peer});
     this.setState({socket: socket});
 
