@@ -78,14 +78,13 @@ class ServiceMap extends Component {
       }
     };
 
-    console.log("Before Axios Call!!!");
+    console.log("Before Axios Call!!!, selectedservicetype is", this.state.selectedServiceType);
 
     axios.get(API_ENDPOINT + '/api/services/' + this.state.selectedServiceType, config)
       .then(result => {
         console.log("Successfully got the highest rated service providers: ", result);
         this.setState({
-          highestRated: result.data,
-          ratings: result.data.map(servicer => servicer[Object.keys(servicer).map(zz => zz)])
+          highestRated: result.data
         });
       })
       .catch((error) => {
@@ -226,8 +225,8 @@ class ServiceMap extends Component {
     event.preventDefault();
     this.setState({selectedServiceType: result.value}, () => {
       this.loadServices()
+      console.log("Changed Service Type: ", this.state.selectedServiceType);
     });
-    console.log("Changed Service Type: ", this.state.selectedServiceType);
   }
 
   fetchRemainingServiceUsers(serviceusers) {
@@ -242,6 +241,7 @@ class ServiceMap extends Component {
   }
 
   render() {
+
     return this.state.highestRated.length > 0 ? (
       <div style={{textAlign:'center'}}  className="servicemap">
         <AddressSearchWithData />
@@ -269,7 +269,8 @@ class ServiceMap extends Component {
         <AddressSearchWithData />
         <br/>
         <form onMouseLeave={this.loadHighestRatedServiceProviders}>
-          <Dropdown onChange={this.changeSelectedService} onClick={this.loadHighestRatedServiceProviders} placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
+          <Dropdown onChange={this.changeSelectedService} 
+          placeholder="Select Your Service" fluid selection options={this.state.serviceTypes} style={{width: 500}} >
           </Dropdown>
         </form>
         <br/>
@@ -280,8 +281,8 @@ class ServiceMap extends Component {
         <ServiceProviderListWithData style={{marginTop: "20px", left: 200}} fetchRemainingServiceUsers={this.fetchRemainingServiceUsers} users={this.state.foundServiceUsers} />
       </div>
     )
+    )
   }
-
 }
 
 ServiceMap.propTypes = {
