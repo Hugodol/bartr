@@ -95,6 +95,7 @@ class UserProfile extends React.Component {
     }
     axios.get(API_ENDPOINT + `/api/users/${auth}`, config)
       .then((res) => {
+        console.log('RES IN FETCH USER', res.data);
         let userService = null;
         _.each(this.state.listOfServices, (service) => {
           if (service.value === res.data.service_id) {
