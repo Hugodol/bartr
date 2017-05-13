@@ -9,7 +9,6 @@ const app = express();
 
 // Socket io connection
 const server = http.createServer(app);
-
 const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
