@@ -72,13 +72,14 @@ router.post('/', (req, res, next) => {
 
 
 router.get('/:services', (req, res, next) => {
+  console.log("REQ IS", req.params.services);
   let reviewsAverage = [[], []];
   let resultData = [];
   let personName = [];
 
   db.Service.findAll({ where: { id: req.params.services}})
     .then((service) => {
-      return db.User.findAll({ where: { service_id: service[0].dataValues.id}})
+      db.User.findAll({ where: { service_id: service[0].dataValues.id}})
         .then((users) => {
           return Promise.all(
             users.map((person, i) => {
@@ -92,27 +93,36 @@ router.get('/:services', (req, res, next) => {
                     !newObj.hasOwnProperty(personName[i]) ? newObj[personName[i]] = avg : null;
                     reviewsAverage[1].push(newObj);
                     let bestRated = reviewsAverage[0].sort().reverse()[0];
-                    return reviewsAverage[1].map((provider) => {
+                    let test = reviewsAverage[1].map((provider) => {
                       for(let key in provider){
                         if(provider[key] === bestRated){
-                          console.log("Person providing Service: ", provider);
+                          // console.log("Person providing Service: ", provider);
                           provider[key] = Math.floor(provider[key]);
-                          console.log(provider);
+                          // console.log(provider);
                           return provider;
                         }
                       }
                     });
+                    // console.log('regina is here', test)
+                    return test
                   }
                 });
               })
           );
         })
         .then((data) => {
+          console.log('data in services api BEFORE FORMATTING: ', data)
           //an array of promises
+
+
           if(data.length > 0){
+            data = data.filter(item => item !== undefined);
+            console.log("DATA AFTER FITLERING UNDEFINED's: ", data);
+            data = data.includes(undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = (data[1] === undefined) ? data.filter((item) => item !== undefined) : data.map((item) => item.filter((thing) => thing !== undefined));
             data = [].concat.apply([], data);
             data = data.filter((el, i, arr) => arr.indexOf(el) === i);
+            console.log("DIFFERENCE AFTER FORMATTING: ", data);
             let a = data[Math.floor((Math.random() * data.length - 1) + 1)];
             let b = data[Math.floor((Math.random() * data.length - 1) + 1)];
             while(b === a){

@@ -2,7 +2,6 @@
 
 const router = require('express').Router();
 const easyBtc = require('easy-bitcoin-js');
-const request = require('request');
 const axios = require('axios');
 var bitcoin = require("bitcoinjs-lib");
 var bigi    = require("bigi");

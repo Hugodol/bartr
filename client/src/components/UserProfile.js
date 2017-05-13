@@ -41,7 +41,7 @@ class UserProfile extends React.Component {
   componentDidMount() {
     this.getServices();
     this.fetchUser();
-    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 5000);
+    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 10000);
   }
   
   componentWillUnmount() {
