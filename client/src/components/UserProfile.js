@@ -41,7 +41,7 @@ class UserProfile extends React.Component {
   componentDidMount() {
     this.getServices();
     this.fetchUser();
-    // window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 10000);
+    window.updates = setInterval(() => { this.updateTicker(); this.updateBalance()}, 10000);
   }
 
   componentWillUnmount() {
@@ -104,7 +104,7 @@ class UserProfile extends React.Component {
         })
         axios.get("https://blockchain.info/q/addressbalance/" + res.data.public_key +  "?confirmations=0&cors=true").then(balance => {
           console.log("BALANCE IS ", balance);
-          // axios.get("https://blockchain.info/ticker").then(tickers => {
+          axios.get("http://api.coindesk.com/v1/bpi/currentprice/usd.json").then(tickers => {
             this.setState({...this.state,
             name: res.data.name,
             address: res.data.address,
@@ -116,9 +116,9 @@ class UserProfile extends React.Component {
             p: res.data.private_key,
             balance: balance.data / Math.pow(10, 8),
             rawBalance: balance.data,
-            // USD: (balance.data / Math.pow(10, 8) * tickers.data.USD.last).toString().slice(0,4)
+            USD: (balance.data / Math.pow(10, 8) * tickers.data.bpi.USD.rate).toString().slice(0,4)
           })
-          // })
+          })
 
         })
         this.loadMap();
@@ -130,9 +130,9 @@ class UserProfile extends React.Component {
 
   updateTicker() {
     console.log("INSIDE UPDATE TICKER");
-    axios.get("https://blockchain.info/ticker").then(tickers => {
-      if ((tickers.data.USD.last * this.state.balance).toString().slice(0,4) !== this.state.USD) {
-        this.setState({USD: (tickers.data.USD.last * this.state.balance).toString().slice(0,4)});
+    axios.get("http://api.coindesk.com/v1/bpi/currentprice/usd.json").then(tickers => {
+      if ((tickers.data.bpi.USD.rate * this.state.balance).toString().slice(0,4) !== this.state.USD) {
+        this.setState({USD: (tickers.data.bpi.USD.rate * this.state.balance).toString().slice(0,4)});
       }
     })
   }
