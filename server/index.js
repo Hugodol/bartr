@@ -13,12 +13,11 @@ const server = http.createServer(app);
 
 // app.use('/peerjs', ExpressPeerServer(server));
 
-const io = require('socket.io');
+const io = require('socket.io').listen(server);
 // ({
 //   transports: ["xhr-polling"]
 // })
 
-io.listen(server);
 
 io.on('connection', socket => {
   console.log('USER CONNECTED');
